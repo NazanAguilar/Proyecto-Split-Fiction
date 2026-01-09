@@ -1,0 +1,48 @@
+def formatText(text,lenLine,split):
+    resultado = ""
+    linia = ""
+    palabras = text.split(split)
+    for palabra in palabras:
+        prevision = len(linia + palabra)
+        if prevision > lenLine:
+
+            if resultado != "":
+                resultado += "\n" + linia
+            else:
+                resultado += linia
+            linia = palabra + " "
+        else:
+            linia += palabra + " "
+    
+    resultado += "\n" + linia
+    
+    return resultado
+
+def getHeader(text):
+    resultado = 120*"*" + "\n" + text.center(120,"=") + "\n" + 120*"*"
+    return resultado
+ 
+    
+def getFormatedBodyColumns(tupla_texts,tupla_sizes,margin=0):
+    resultado = ""
+    
+
+
+    return resultado
+
+
+
+#-----------------PRUEBAS----------------------
+
+
+text1 = "Seguro que más de uno recuerda aquellos libros en los que podías elegir cómo seguir con la aventura que estabas viviendo simplemente"
+
+#print(formatText(text1,20,split=" "))
+
+#print(getHeader("text"))
+
+print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
+
+
+#-----------------PERSONALIZAR----------------------
+#poner la contrasenya en la base de datos cifrada y sacarla de ahi cifrada pero descrifrarlo en el codigo
