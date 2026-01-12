@@ -1,3 +1,5 @@
+for Funciones.Variables import *
+
 def formatText(text,lenLine,split):
     resultado = ""
     linia = ""
