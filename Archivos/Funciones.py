@@ -1,4 +1,6 @@
-for Archivos.Variables import *
+from Archivos.Variables import *
+
+print(aventures)
 
 def formatText(text,lenLine,split):
     resultado = ""
@@ -53,13 +55,11 @@ def getFormatedBodyColumns(tupla_texts,tupla_sizes,margin=0):
 
 #-----------------PRUEBAS----------------------
 
-text1 = "Seguro que más de uno recuerda aquellos libros en los que podías elegir cómo seguir con la aventura que estabas viviendo simplemente"
-
 #print(formatText(text1,20,split=" "))
 
 #print(getHeader("text"))
 
-print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
+#print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
 
 
 #-----------------PERSONALIZAR----------------------
