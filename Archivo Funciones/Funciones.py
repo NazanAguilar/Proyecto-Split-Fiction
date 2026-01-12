@@ -51,8 +51,38 @@ text1 = "Seguro que más de uno recuerda aquellos libros en los que podías eleg
 
 #print(getHeader("text"))
 
-print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
+#print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
 
 
 #-----------------PERSONALIZAR----------------------
-#poner la contrasenya en la base de datos cifrada y sacarla de ahi cifrada pero descrifrarlo en el codigo
+
+def xifrar(linia):
+    abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890°|!\"#$%&/()=?¡¿'´+*~{}[]¬\\,.;:-_<>@"
+    resultado = ""
+    linia = linia.replace(" ","")
+    for caracter in linia:
+        if caracter in abecedario:
+            posicion = abecedario.index(caracter)
+            nueva_posicion = (posicion + 13) % len(abecedario)
+            resultado += abecedario[nueva_posicion]
+        else:
+            resultado += caracter
+    return resultado
+
+
+def desxifrar(linia):
+    abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890°|!\"#$%&/()=?¡¿'´+*~{}[]¬\\,.;:-_<>@"
+    resultado = ""
+    for caracter in linia:
+        if caracter in abecedario:
+            posicion = abecedario.index(caracter)
+            nueva_posicion = (posicion - 13) % len(abecedario)
+            resultado += abecedario[nueva_posicion]
+        else:
+            resultado += caracter
+    return resultado
+
+cifrado = xifrar("MARC")
+print(xifrar("MARC"))
+
+print(desxifrar(cifrado))
