@@ -2,7 +2,7 @@
 #variables para pruebas
 text1 = "Seguro que más de uno recuerda aquellos libros en los que podías elegir cómo seguir con la aventura que estabas viviendo simplemente"
 
-aventures = {
+adventures = {
     1: {
         "Name": "nom de l'aventura",
         "Description": "descripció de l'aventura",

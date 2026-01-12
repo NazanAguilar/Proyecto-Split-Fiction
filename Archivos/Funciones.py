@@ -1,6 +1,4 @@
-from Archivos.Variables import *
-
-print(aventures)
+from Variables import *
 
 def formatText(text,lenLine,split):
     resultado = ""
@@ -23,7 +21,20 @@ def formatText(text,lenLine,split):
     return resultado
 
 def getHeader(text):
-    resultado = 120*"*" + "\n" + text.center(120,"=") + "\n" + 120*"*"
+    resultado = text["cabezera"].center(120,"=") + "\n"*3
+
+    cantidad_columnas = len(text["columnas"])
+
+    if cantidad_columnas == 3:
+        for i in range(len(text["columnas"])):
+            if i == 0:
+                resultado += text["columnas"][i].ljust(15)
+            elif i == 1:
+                resultado += text["columnas"][i].ljust(47)
+            else:
+                resultado += text["columnas"][i].ljust(50)
+            
+    resultado += "\n" + 120*"*" + "\n"
     return resultado
  
     
@@ -51,16 +62,27 @@ def getFormatedBodyColumns(tupla_texts,tupla_sizes,margin=0):
 
     return resultado
 
+def getFormatedAdventures(adventures):
+    cabezera = getHeader({"cabezera":"Adventures","columnas":["Id Adventure","Adventure","Description"]})
+    print(cabezera)
+    input()
+    datos = ""
+
+    for i in range(len(adventures)):
+        datos += "{:15}{:47}{:50}".format(i+1,adventures[i+1]["Name"],formatText(adventures[i+1]["Description",50," "]))
+    
+    return cabezera + datos 
 
 
 #-----------------PRUEBAS----------------------
 
 #print(formatText(text1,20,split=" "))
 
-#print(getHeader("text"))
+#print(getHeader("Adventures"))
 
 #print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
 
+getFormatedAdventures(adventures)
 
 #-----------------PERSONALIZAR----------------------
 
