@@ -25,21 +25,27 @@ def getHeader(text):
     
 def getFormatedBodyColumns(tupla_texts,tupla_sizes,margin=0):
     datos = {}
+    max_lin = 0
     resultado = ""
 
     for i in range(len(tupla_texts)):
         datos[len(datos) + 1] = formatText(tupla_texts[i],tupla_sizes[i]-margin,split=" ")
 
         datos[i+1] = datos[i+1].split("\n")
-    
-    
-    
-    
-        
-    
 
+        if len(datos[i+1]) > max_lin:
+            max_lin = len(datos[i+1])
 
-    return
+    for i in range(max_lin):
+        for columna in datos:
+            for fila in datos[columna]:
+                if i < len(datos[columna]):
+                    if datos[columna][i] == fila:
+                        resultado += fila.ljust(tupla_sizes[columna-1])
+            resultado += " "
+        resultado += "\n" 
+
+    return resultado
 
 
 
@@ -51,12 +57,12 @@ text1 = "Seguro que más de uno recuerda aquellos libros en los que podías eleg
 
 #print(getHeader("text"))
 
-#print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
+print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
 
 
 #-----------------PERSONALIZAR----------------------
 
-def xifrar(linia):
+def cifrar(linia):
     abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890°|!\"#$%&/()=?¡¿'´+*~{}[]¬\\,.;:-_<>@"
     resultado = ""
     linia = linia.replace(" ","")
@@ -69,8 +75,7 @@ def xifrar(linia):
             resultado += caracter
     return resultado
 
-
-def desxifrar(linia):
+def descifrar(linia):
     abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890°|!\"#$%&/()=?¡¿'´+*~{}[]¬\\,.;:-_<>@"
     resultado = ""
     for caracter in linia:
@@ -81,8 +86,3 @@ def desxifrar(linia):
         else:
             resultado += caracter
     return resultado
-
-cifrado = xifrar("MARC")
-print(xifrar("MARC"))
-
-print(desxifrar(cifrado))
