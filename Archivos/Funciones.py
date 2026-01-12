@@ -1,4 +1,4 @@
-for Funciones.Variables import *
+for Archivos.Variables import *
 
 def formatText(text,lenLine,split):
     resultado = ""
