@@ -27,3 +27,8 @@ inputOptText="\nElige tu opción:"
 lista = [1,2,3,4]
 dic_range = {"1":1,"2":2,"3":3,"4":4}
 excepciones = ["w","e",-1]
+
+usuarios = {'Jordi': {'password': '1234','idUser': 2},
+    'Maria': {'password': 'abcd','idUser': 3},
+    'Carlos': {'password': 'pass123','idUser': 4},
+    'Lucia': {'password': 'qwerty','idUser': 5}}

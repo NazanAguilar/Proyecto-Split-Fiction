@@ -184,8 +184,21 @@ def checkPassword(password):
     return False
 
 def checkUser(user):
-    print(long)
-    print(alfnum)
+
+    if len(user) >= 5 and len(user) <= 12:
+        if user.isalnum():
+            return True
+        else:
+            print("User have to be alphanumeric")
+    else:
+        print("Length of username have to be longer than 5 and shorter than 11")
+
+def userExists(user):
+    users = usuarios.keys()
+    return user in users
+
+# PROXIMAMENTE PARA CREAR EL USUARIO SI EXISTE QUE TIENE QUE SALIR DE ERROR
+#print("User already in use")
 
 #-----------------PERSONALIZAR----------------------
 
@@ -263,3 +276,5 @@ print(checkPassword("PASSWORD123!") )
 
 print("\n--- Test 7: TODO CORRECTO (No imprimirá nada) ---")
 print(checkPassword("Admin123!"))"""
+
+#print(userExists("Jordi"))

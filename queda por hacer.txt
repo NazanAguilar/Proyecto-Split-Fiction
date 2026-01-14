@@ -110,7 +110,16 @@ FUNCIONES AUXILIARES DEL JUEGO
     Observem que en formatar les línies, no tallem cap paraula per la meitat
 
     MIRAR IMAGEN EN PDF DEL PROYECTO EN LA PAGINA 17 LA PRIMERA IMAGEN    
-
-
+  
+  -replay(choices)
+    Aquesta funció serà l'encarregada de fer-nos el replay d'una aventura ja jugada, una
+    vegada hàgim triat el idGame que volem reviure.
+    Li passarem una tupla de tuples del tipus:
+    ((pas, selecció), (pas, selecció),(pas, selecció)... )
+    Amb tots els passos i seleccions que es van fer en aquesta aventura i ens mostrarà
+    l'aventura pas a pas com si l'estiguéssim jugant de nou, però en comptes de
+    demanar-nos triar un pas, ens demanarà que cliquem "Enter" per a continuar
+    
+    MIRAR IMAGEN EN PDF DEL PROYECTO EN LA PAGINA 21 LA PRIMERA IMAGEN    
 
 
