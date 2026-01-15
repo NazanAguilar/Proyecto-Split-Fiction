@@ -13,7 +13,7 @@ try:
 
         cursor = conexion.cursor()
         cursor.execute("SELECT * FROM characters")
-        registro = cursor.fetchone()
+        registro = cursor.fetchall()
         print("Conectado a: {}".format(registro))
 
 except mysql.connector.Error as error:

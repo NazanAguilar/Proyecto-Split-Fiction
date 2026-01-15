@@ -123,3 +123,25 @@ FUNCIONES AUXILIARES DEL JUEGO
     MIRAR IMAGEN EN PDF DEL PROYECTO EN LA PAGINA 21 LA PRIMERA IMAGEN    
 
 
+
+
+
+
+
+
+
+
+
+
+
+nos han dado un nombre para entrar a la web/servidor sera ejemplo aventura_.ieti.site
+
+ELS NUESTRO ES: aventura7
+
+para entrar a la web hay que HACER
+
+aventura7.ieti.site
+
+esto es por terminal
+
+ssh -p 20127 aventura7@ieticloudpro.ieti.cat
