@@ -1,4 +1,3 @@
-import datetime
 from Variables import *
 
 def formatText(text,lenLine,split):
@@ -90,7 +89,6 @@ def getTableFromDict(tuple_keys,weigth_of_columns,dict_of_data):
     return resultado
 
 def getOpt(textOpts="",inputOptText="",rangeList=[],dictionary={},exceptions=[]):
-    resultado = ""
     con_lista = True
     elegido = False
 
