@@ -223,7 +223,6 @@ def cifrar(texto):
             resultado += caracter
     return resultado
 
-print(cifrar("Hola_bon_dia"))
 
 def descifrar(texto):
     abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¿€¬ºª"
