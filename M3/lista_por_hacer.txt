@@ -1,0 +1,123 @@
+QUEDA POR HACER DE FUNCIONES QUE NO SE PUEDEN HACER POR EL MOMENTO
+
+Crear los diccionarios a partir de la base de datos que son:
+  
+  - adventures
+    · {1 id de l'aventura: {'Name': ' nom de l'aventura', 'Description': 'descripció de l'aventura', 'characters': [llista
+      amb els ids dels personatges]}, 2: {'Name': ' nom de l'aventura …. } 
+  
+  - characters
+    · {id del personatje: 'nom del personatje', 10: 'nom del personatje amb id 10', 15: 'nom del personatje amb id 15}
+  
+  - IdAnswers_ByStep_Adventure
+    · {(idAnswers_ByStep_Adventure, idByStep_Adventure): {'Description': 'descripció daquest pas',
+      'Resolution_Anwer': 'Texte al camp resolution answer de la taula a la BBDD', 'NextStep_Adventure': id del
+      seguent pas}, (2, 1): {'Description': 'Escoge el camino del centro, del que parecen provenir ruidos de ramas al
+      romperse y astillarse ...', 'Resolution_Anwer': 'Piensas que para ser digno de la espada de las valkirias, debes
+      de afrontar tus miedos y peligros que acechan', 'NextStep_Adventure': 3}….}
+  
+  - id_by_steps
+    · {1: {'Description': 'descripció del pas ', 'answers_in_step': (tupla amb els ids de les opcions posibles en aquest
+      pas ), 'Final_Step': 0 si no és un pas final, 1 si és un pas final}, 2: {'Description': 'Efectivamente, el puente es el
+      c├ímino mas corto, no contabas con que el puente se descolgar├¡a, y no sobrevives a la caida. FIN',
+      'answers_in_step': (), 'Final_Step': 1}, 3:…...}
+  
+  - replayAdventures
+    · {idGame:{idUser': id dusuari, 'Username': 'nom del usuari', 'idAdventure': id de aventura, 'Name': 'nom de
+      l'aventura', # 'date': data en format datetime, 'idCharacter': id del personatje, 'CharacterName': 'Nom del
+      personatje'} ,1: {'idUser': 1, 'Username': 'Rafa', 'idAdventure': 1, 'Name': 'Este muerto esta muy vivo',
+      # 'date': datetime.datetime(2021, 11, 16, 19, 5, 48), 'idCharacter': 1, 'CharacterName': 'Beowulf'},
+      # 2: {'idUser': 1, 'Username': 'Rafa', 'idAdventure': 1, 'Name': 'Este muerto esta muy vivo',
+      # 'date': datetime.datetime(2021, 11, 24, 0, 0), 'idCharacter': 1, 'CharacterName': 'Beowulf'},
+
+Crear las siguientes funciones para el programa pero se necesita la base de datos:
+
+  - get_answers_bystepadventure():
+    Ens retornarà el diccionari idAnswers_ByStep_Adventure una vegada hàgim seleccionat
+    una aventura.
+    Només tindrem els passos relacionats amb l'aventura que estem jugant.
+  
+  - get_adventures_with_chars()
+    Ens retornarà el diccionari adventures
+
+  - get_id_bystep_adventure()
+    Ens retornarà el diccionari id_by_steps amb només els passos relacionats amb l'aventura
+    que estem jugant 
+
+  - get_first_step_adventure()
+    Un cop seleccionada una aventura, aquesta funció ens serveix per trobar el primer pas
+    d'aquesta aventura.
+
+  - get_characters()
+    Ens retorna el diccionari characters
+
+  - getReplayAdventures()
+    Ens retorna el diccionari replayAdventures
+  
+  - getChoices()
+    Tornem una tuple de tuples binàries on cada tupla binària representa un pas i la
+    selecció
+    Per exemple, comencem l'aventura X, comencem al pas 101 i triem l'opcio 101 ( en
+    aquest cas l'id d'opcio coincideix amb l'id de pas )
+    Aquesta elecció ens porta al pas 103, on escollim l'opció 108.
+    Aquesta elecció ens porta al pas 108 on escollim l'opció 110 i acaba l'aventura.
+    En aquest cas, si escollim reviure aquesta aventura, la funció ens tornaria:
+    ((101, 101), (103, 108), (108, 110))
+
+  - getIdGames()
+    Ens retorna una tupla amb tots els id de game que s'han jugat, després la utilitzarem per
+    a establir un id de joc que no existeixi en la bbdd
+
+  - insertCurrentGame(idGame,idUser,isChar,idAdventure)
+    Aquesta funció insereix un nou registre de “game” a la BBDD
+
+  - getUsers()
+    Aquesta funció ens retorna un diccionari del tipus:
+    {'NomUsuari': {'password': 'passwordDelUsuari', 'idUser': id de l’usuari}, 'Jordi': {'password':
+    '1234', 'idUser': 2}}
+
+  - getUserIds()
+    Ens retorna una llista composta de dues llistes, la primera els noms d’usuaris, la segona
+    els id dels usuaris, exemple:
+    [['ester23', 'Jordi', 'MarioR', 'MarioT', 'PedroG', 'Rafa12'], [0, 2, 5, 3, 4, 1]]
+  
+  - insertUser(id, user,password)
+    Aquesta funció ens servirà per inserir un usuari a la BBDD un cop hàgim creat.
+
+  - get_table(query)
+    Aquesta funció rebrà una query i ens retornarà el resultat de la query en una tupla de
+    tuples.
+    La tupla 0 serà una tupla amb els noms de les columnes de la query i la resta de tuples
+    seran les files de la query.
+
+  - checkUserbdd(user,password)
+    Funció que chequea usuari i password de la BBDD, si usuari no existeix, retorna 0.
+    Si password no és correcte, retorna -1, si tot és correcte, retorna 1
+
+FUNCIONES AUXILIARES DEL JUEGO
+
+  - setIdGame()
+    Aquesta funció actualitza la bbdd amb un nou game.
+
+  - insertCurrentChoice(idGame,actual_id_step,id_answer)
+    Aquesta funció actualitza la taula choices.\n
+
+  - getFormatedAnswers(idAnswer,text,lenLine,leftMargin)
+    A aquesta funció li passem un id de resposta, el text de la resposta, longitud de la línia i
+    marge a la dreta, i ens retorna la resposta amb els paràmetres passats.
+    Aquesta funció ens serà útil per a presentar les respostes possibles en cadascun dels
+    passos.
+    Observem que en formatar les línies, no tallem cap paraula per la meitat
+
+    MIRAR IMAGEN EN PDF DEL PROYECTO EN LA PAGINA 17 LA PRIMERA IMAGEN    
+  
+  -replay(choices)
+    Aquesta funció serà l'encarregada de fer-nos el replay d'una aventura ja jugada, una
+    vegada hàgim triat el idGame que volem reviure.
+    Li passarem una tupla de tuples del tipus:
+    ((pas, selecció), (pas, selecció),(pas, selecció)... )
+    Amb tots els passos i seleccions que es van fer en aquesta aventura i ens mostrarà
+    l'aventura pas a pas com si l'estiguéssim jugant de nou, però en comptes de
+    demanar-nos triar un pas, ens demanarà que cliquem "Enter" per a continuar
+    
+    MIRAR IMAGEN EN PDF DEL PROYECTO EN LA PAGINA 21 LA PRIMERA IMAGEN
