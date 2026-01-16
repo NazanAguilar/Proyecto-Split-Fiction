@@ -148,6 +148,8 @@ def checkPassword(password):
     num = "1234567890"
     esp = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¿€¬ºª"
 
+    accentos = "áàéèíìóòúùÁÀÉÈÍÌÓÒÚÙ"    
+
     especial_corr = False
     num_corr = False
     may_corr = False
@@ -157,8 +159,12 @@ def checkPassword(password):
     if len(password) >= 8 and len(password) <= 12:
         if " " in password:
             print("Password cannot contain spaces")
+        
         else:
             for i in range(len(password)):
+                if password[i] in accentos:
+                    print("Accents are not allowed")
+                    return False
                 if password[i] in esp:
                     especial_corr = True
                 if password[i] in mayus:
@@ -176,14 +182,19 @@ def checkPassword(password):
                     if may_corr == False or min_corr == False:
                         print("Password have to include some uppercase and some lowercase")
                     else:
-                        True
+                        return True
     else:
         print("Length of password is not correct")
     return False
 
 def checkUser(user):
+    accentos = "áàéèíìóòúùÁÀÉÈÍÌÓÒÚÙ"    
 
     if len(user) >= 5 and len(user) <= 12:
+        for i in range(len(user)):
+            if user[i] in accentos:
+                print("Accents are not allowed")
+                return False
         if user.isalnum():
             return True
         else:
@@ -203,7 +214,6 @@ def userExists(user):
 def cifrar(texto):
     abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¿€¬ºª"
     resultado = ""
-    texto = texto.replace(" ","")
     for caracter in texto:
         if caracter in abecedario:
             posicion = abecedario.index(caracter)
@@ -213,10 +223,12 @@ def cifrar(texto):
             resultado += caracter
     return resultado
 
-def descifrar(linia):
+print(cifrar("Hola_bon_dia"))
+
+def descifrar(texto):
     abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¿€¬ºª"
     resultado = ""
-    for caracter in linia:
+    for caracter in texto:
         if caracter in abecedario:
             posicion = abecedario.index(caracter)
             nueva_posicion = (posicion - 13) % len(abecedario)
