@@ -202,11 +202,11 @@ def userExists(user):
 
 #-----------------PERSONALIZAR----------------------
 
-def cifrar(linia):
+def cifrar(texto):
     abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¿€¬ºª"
     resultado = ""
-    linia = linia.replace(" ","")
-    for caracter in linia:
+    texto = texto.replace(" ","")
+    for caracter in texto:
         if caracter in abecedario:
             posicion = abecedario.index(caracter)
             nueva_posicion = (posicion + 13) % len(abecedario)
