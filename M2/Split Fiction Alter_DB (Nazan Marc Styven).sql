@@ -8,10 +8,10 @@ ALTER TABLE users
     ADD CONSTRAINT pk_users PRIMARY KEY (id_users),
     MODIFY username VARCHAR(50) NOT NULL,
     MODIFY password VARCHAR(255) NOT NULL,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT uq_users_username UNIQUE (username);
 
 -- =========================
@@ -22,10 +22,10 @@ ALTER TABLE characters
     ADD CONSTRAINT pk_characters PRIMARY KEY (id_characters),
     MODIFY name VARCHAR(100) NOT NULL,
     MODIFY description TEXT NOT NULL,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT uq_characters_name UNIQUE (name);
 
 -- =========================
@@ -36,10 +36,10 @@ ALTER TABLE adventures
     ADD CONSTRAINT pk_adventures PRIMARY KEY (id_adventures),
     MODIFY name VARCHAR(150) NOT NULL,
     MODIFY description TEXT NOT NULL,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT uq_adventures_name UNIQUE (name);
 
 -- =========================
@@ -50,10 +50,10 @@ ALTER TABLE adventure_characters
     ADD CONSTRAINT pk_adventure_characters PRIMARY KEY (id_adventure_characters),
     MODIFY fk_adventure_characters_adventures INT UNSIGNED NOT NULL,
     MODIFY fk_adventure_characters_characters INT UNSIGNED NOT NULL,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT fk_ac_adventures
         FOREIGN KEY (fk_adventure_characters_adventures)
         REFERENCES adventures(id_adventures),
@@ -70,10 +70,10 @@ ALTER TABLE steps
     MODIFY fk_steps_adventures INT UNSIGNED NOT NULL,
     MODIFY description TEXT NOT NULL,
     MODIFY is_final BOOLEAN NOT NULL DEFAULT FALSE,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT fk_steps_adventures
         FOREIGN KEY (fk_steps_adventures)
         REFERENCES adventures(id_adventures);
@@ -87,11 +87,11 @@ ALTER TABLE decisions
     MODIFY fk_decisions_steps INT UNSIGNED NOT NULL,
     MODIFY fk_decisions_next_step INT UNSIGNED NOT NULL,
     MODIFY description TEXT NOT NULL,
-    MODIFY result_text TEXT NOT NULL,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY result_text TEXT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT fk_decisions_steps
         FOREIGN KEY (fk_decisions_steps)
         REFERENCES steps(id_steps),
@@ -109,10 +109,10 @@ ALTER TABLE game
     MODIFY fk_game_characters INT UNSIGNED NOT NULL,
     MODIFY fk_game_adventures INT UNSIGNED NOT NULL,
     MODIFY game_date DATETIME NOT NULL,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT fk_game_users
         FOREIGN KEY (fk_game_users)
         REFERENCES users(id_users),
@@ -132,10 +132,10 @@ ALTER TABLE choices
     MODIFY fk_choices_game INT UNSIGNED NOT NULL,
     MODIFY fk_choices_steps INT UNSIGNED NOT NULL,
     MODIFY fk_choices_decisions INT UNSIGNED NOT NULL,
-    MODIFY data_alta DATETIME NOT NULL,
-    MODIFY usuari_alta INT NOT NULL,
-    MODIFY data_mod DATETIME NULL,
-    MODIFY usuari_mod INT NULL,
+    MODIFY date_reg DATETIME NOT NULL,
+    MODIFY user_reg INT NOT NULL,
+    MODIFY date_mod DATETIME NULL,
+    MODIFY user_mod INT NULL,
     ADD CONSTRAINT fk_choices_game
         FOREIGN KEY (fk_choices_game)
         REFERENCES game(id_game),
