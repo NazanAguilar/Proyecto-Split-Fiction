@@ -1,10 +1,11 @@
 import datetime
-#variables para pruebas
+from Funcions import *
 
 salir = False
 
 textMenu0="\n1)Login\n2)Create user\n3)Replay Adventures\n4)Reports\n5)Exit"
 
+#variables para pruebas
 
 text1 = "Seguro que más de uno recuerda aquellos libros en los que podías elegir cómo seguir con la aventura que estabas viviendo simplemente"
 
