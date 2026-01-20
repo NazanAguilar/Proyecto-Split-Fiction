@@ -1,7 +1,7 @@
 import pymysql
 from distutils import util
-from Funcions_programa.Funcions import cifrar
-from Funcions_programa.Funcions import descifrar
+"""from Funcions_programa.Funcions import cifrar
+from Funcions_programa.Funcions import descifrar"""
 
 # Configuración de conexión
 db_config = {
