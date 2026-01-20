@@ -292,7 +292,6 @@ input:invalid, textarea:invalid {
   color: var(--secondary);
 }
 
-/* Wrapper per fer-la responsive */
 .table-wrapper {
   overflow-x: auto;
 }
