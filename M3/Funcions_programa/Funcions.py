@@ -1,4 +1,4 @@
-from Variables import *
+from Funcions_programa.Variables import *
 
 def formatText(text,lenLine,split):
     resultado = ""
@@ -203,6 +203,7 @@ def checkUser(user):
         print("Length of username have to be longer than 5 and shorter than 11")
 
 def userExists(user):
+    usuarios = get_users()
     users = usuarios.keys()
     return user in users
 

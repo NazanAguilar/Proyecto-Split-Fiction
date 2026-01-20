@@ -1,9 +1,16 @@
 import datetime
-from Funcions import *
+from Funcions_programa.Funcions import *
+from Funcions_programa.BBDD import *
 
 salir = False
+login = False
+create_user = False
+menu0 = True
+comp_user = False
+comp_pass = False
 
-textMenu0="\n1)Login\n2)Create user\n3)Replay Adventures\n4)Reports\n5)Exit"
+textMenu0_login="\n1)Login\n2)Create user\n3)Replay Adventures\n4)Reports\n5)Exit"
+textMenu0_logout="\n1)Logout\n2)Create user\n3)Replay Adventures\n4)Reports\n5)Exit"
 
 #variables para pruebas
 
@@ -34,7 +41,5 @@ lista = [1,2,3,4]
 dic_range = {"1":1,"2":2,"3":3,"4":4}
 excepciones = ["w","e",-1]
 
-usuarios = {'Jordi': {'password': '1234','idUser': 2},
-    'Maria': {'password': 'abcd','idUser': 3},
-    'Carlos': {'password': 'pass123','idUser': 4},
-    'Lucia': {'password': 'qwerty','idUser': 5}}
+
+print(get_users())

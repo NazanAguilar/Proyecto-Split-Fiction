@@ -1,7 +1,7 @@
 import pymysql
 from distutils import util
-from Funcions import cifrar
-from Funcions import descifrar
+from Funcions_programa.Funcions import cifrar
+from Funcions_programa.Funcions import descifrar
 
 # Configuración de conexión
 db_config = {
@@ -22,7 +22,7 @@ def connect_to_database():
             database=db_config['database'],
         )
 
-        print("Conectado a la base de datos")
+        #print("Conectado a la base de datos")
         return connection
     except pymysql.MySQLError as e:
         print(f"Error al conectar a la base de datos: {e}")
@@ -32,7 +32,7 @@ def close_connection(connection):
     """Cierra la conexión con la base de datos."""
     if connection:
         connection.close()
-        print("Conexión cerrada.")
+        #print("Conexión cerrada.")
 
 def execute_query(connection, query, params = None):
     """Ejecuta una consulta SQL y devuelve los resultados."""
@@ -144,5 +144,3 @@ dic_users = get_users()
 adventures = get_adventures()
 
 characters = get_characters()
-
-print(characters)
