@@ -1,5 +1,11 @@
 import datetime
 #variables para pruebas
+
+salir = False
+
+textMenu0="\n1)Login\n2)Create user\n3)Replay Adventures\n4)Reports\n5)Exit"
+
+
 text1 = "Seguro que más de uno recuerda aquellos libros en los que podías elegir cómo seguir con la aventura que estabas viviendo simplemente"
 
 adventures = {
@@ -22,7 +28,6 @@ diccionari = {4: {'idUser': 2, 'Username': 'Jordi', 'idAdventure': 1, 'Name': 'E
 tuple_of_keys = ("Username","Name","CharacterName","date")
 weigth_of_columns = (20, 30, 20, 20)
 
-textOpts="\n1)Login\n2)Create user\n3)Show Adventures\n4)Exit"
 inputOptText="\nElige tu opción:"
 lista = [1,2,3,4]
 dic_range = {"1":1,"2":2,"3":3,"4":4}

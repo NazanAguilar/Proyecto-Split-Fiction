@@ -2,13 +2,6 @@ QUEDA POR HACER DE FUNCIONES QUE NO SE PUEDEN HACER POR EL MOMENTO
 
 Crear los diccionarios a partir de la base de datos que son:
   
-  - adventures
-    · {1 id de l'aventura: {'Name': ' nom de l'aventura', 'Description': 'descripció de l'aventura', 'characters': [llista
-      amb els ids dels personatges]}, 2: {'Name': ' nom de l'aventura …. } 
-  
-  - characters
-    · {id del personatje: 'nom del personatje', 10: 'nom del personatje amb id 10', 15: 'nom del personatje amb id 15}
-  
   - IdAnswers_ByStep_Adventure
     · {(idAnswers_ByStep_Adventure, idByStep_Adventure): {'Description': 'descripció daquest pas',
       'Resolution_Anwer': 'Texte al camp resolution answer de la taula a la BBDD', 'NextStep_Adventure': id del

@@ -62,14 +62,8 @@ def get_characters():
         if results:
             # Diccionario con ID_Partida como clave
             partidas_dict = {
-                row['id_characters']: {
-                    "name": row['name'],
-                    "description": row['description'],
-                    "date_reg": row['date_reg'],
-                    "user_reg": row['user_reg'],
-                    "date_mod": row['date_mod'],
-                    "user_mod": row['user_mod']
-                } for row in results
+                row['id_characters']: row['name']
+                 for row in results
             }
             return partidas_dict
         return results
@@ -84,7 +78,7 @@ def get_users():
         results = execute_query(connection, query)
         close_connection(connection)
         if results:
-            partidas_dict = {
+            users_dict = {
                 row['id_users']: {
                     "username": row['username'],
                     "password": row['password'],
@@ -94,19 +88,61 @@ def get_users():
                     "user_mod": row['user_mod']
                 } for row in results
             }
-            return partidas_dict
+            return users_dict
+        return results
+    return {}
+
+def get_adventures():
+    """Consulta la tabla de Partidas y devuelve los resultados como un diccionario."""
+    query = "SELECT * FROM adventures;"  # Consulta a la tabla Partidas
+    connection = connect_to_database()
+
+    if connection:
+        results = execute_query(connection, query)
+        close_connection(connection)
+        if results:
+            adventures_dict = {
+                row['id_adventures']: {
+                    "name": row['name'],
+                    "description": row['description']
+                } for row in results
+            }            
+            
+            adventures_dict["characters"] = []
+            connection = connect_to_database()
+
+            query = "SELECT fk_adventure_characters_characters from adventure_characters where fk_adventure_characters_adventures = %s;"
+
+            for key in adventures_dict:
+                results = execute_query(connection, query, (key))
+
+                adv_characters = [
+                                row['fk_adventure_characters_characters']
+                                for row in results
+                            ]
+                
+                for character in adv_characters:
+                    adventures_dict["characters"].append(character)
+        
+            return adventures_dict
         return results
     return {}
 
 def add_user(name,pwd):
     pwd = cifrar(pwd)
 
-    query = "INSERT INTO users (username, password, date_reg, user_reg) VALUES (%s, %s, NOW(), (SELECT COUNT(*) FROM users AS t));"
+    query = "INSERT INTO users (username, password, date_reg, user_reg) VALUES (%s, %s, NOW(), (SELECT COUNT(*) + 1 FROM users AS t));"
     connection = connect_to_database()
     results = execute_query(connection, query, (name, pwd))
     if connection:
         connection.commit() 
         close_connection(connection)
-    return results
 
-print(add_user("prueba2","1234"))
+
+dic_users = get_users()
+
+adventures = get_adventures()
+
+characters = get_characters()
+
+print(characters)
