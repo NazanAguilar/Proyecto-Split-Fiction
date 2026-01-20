@@ -1,4 +1,95 @@
+from Funcions_programa.BBDD import * 
 from Funcions_programa.Variables import *
+
+#FUNCIONES BBDD
+def get_characters():
+    """Consulta la tabla de Partidas y devuelve los resultados como un diccionario."""
+    query = "SELECT * FROM characters;"  # Consulta a la tabla Partidas
+    connection = connect_to_database()
+
+    if connection:
+        results = execute_query(connection, query)
+        close_connection(connection)
+        if results:
+            # Diccionario con ID_Partida como clave
+            partidas_dict = {
+                row['id_characters']: row['name']
+                 for row in results
+            }
+            return partidas_dict
+        return results
+    return {}
+
+def get_users():
+    """Consulta la tabla de Partidas y devuelve los resultados como un diccionario."""
+    query = "SELECT * FROM users;"  # Consulta a la tabla Partidas
+    connection = connect_to_database()
+
+    if connection:
+        results = execute_query(connection, query)
+        close_connection(connection)
+        if results:
+            users_dict = {
+                row['id_users']: {
+                    "username": row['username'],
+                    "password": row['password'],
+                    "date_reg": row['date_reg'],
+                    "user_reg": row['user_reg'],
+                    "date_mod": row['date_mod'],
+                    "user_mod": row['user_mod']
+                } for row in results
+            }
+            return users_dict
+        return results
+    return {}
+
+def get_adventures():
+    """Consulta la tabla de Partidas y devuelve los resultados como un diccionario."""
+    query = "SELECT * FROM adventures;"  # Consulta a la tabla Partidas
+    connection = connect_to_database()
+
+    if connection:
+        results = execute_query(connection, query)
+        close_connection(connection)
+        if results:
+            adventures_dict = {
+                row['id_adventures']: {
+                    "name": row['name'],
+                    "description": row['description']
+                } for row in results
+            }            
+            
+            adventures_dict["characters"] = []
+            connection = connect_to_database()
+
+            query = "SELECT fk_adventure_characters_characters from adventure_characters where fk_adventure_characters_adventures = %s;"
+
+            for key in adventures_dict:
+                results = execute_query(connection, query, (key))
+
+                adv_characters = [
+                                row['fk_adventure_characters_characters']
+                                for row in results
+                            ]
+                
+                for character in adv_characters:
+                    adventures_dict["characters"].append(character)
+        
+            return adventures_dict
+        return results
+    return {}
+
+def add_user(name,pwd):
+    pwd = cifrar(pwd)
+
+    query = "INSERT INTO users (username, password, date_reg, user_reg) VALUES (%s, %s, NOW(), (SELECT COUNT(*) + 1 FROM users AS t));"
+    connection = connect_to_database()
+    results = execute_query(connection, query, (name, pwd))
+    if connection:
+        connection.commit() 
+        close_connection(connection)
+
+#FUNCIONES PROGRAMA
 
 def formatText(text,lenLine,split):
     resultado = ""
@@ -189,7 +280,7 @@ def checkPassword(password):
 
 def checkUser(user):
     accentos = "áàéèíìóòúùÁÀÉÈÍÌÓÒÚÙ"    
-
+    
     if len(user) >= 5 and len(user) <= 12:
         for i in range(len(user)):
             if user[i] in accentos:
@@ -204,11 +295,18 @@ def checkUser(user):
 
 def userExists(user):
     usuarios = get_users()
-    users = usuarios.keys()
-    return user in users
+    list_users = []
 
-# PROXIMAMENTE PARA CREAR EL USUARIO SI EXISTE QUE TIENE QUE SALIR DE ERROR
-#print("User already in use")
+    for id in usuarios:
+        list_users.append(usuarios[id]["username"])
+    
+    print(user in list_users)
+
+    if user in list_users:
+        print("User already in use")
+        return True
+    else:
+        return False
 
 #-----------------PERSONALIZAR----------------------
 

@@ -1,13 +1,12 @@
 import datetime
-from Funcions_programa.Funcions import *
-from Funcions_programa.BBDD import *
 
 salir = False
 login = False
 create_user = False
 menu0 = True
 comp_user = False
-comp_pass = False
+comp_pass = True
+in_users = False
 
 textMenu0_login="\n1)Login\n2)Create user\n3)Replay Adventures\n4)Reports\n5)Exit"
 textMenu0_logout="\n1)Logout\n2)Create user\n3)Replay Adventures\n4)Reports\n5)Exit"
@@ -40,6 +39,3 @@ inputOptText="\nElige tu opción:"
 lista = [1,2,3,4]
 dic_range = {"1":1,"2":2,"3":3,"4":4}
 excepciones = ["w","e",-1]
-
-
-print(get_users())
