@@ -82,6 +82,15 @@ def get_adventures():
 def add_user(name,pwd):
     pwd = cifrar(pwd)
 
+    check_query = "SELECT 1 FROM users WHERE username = %s"
+    connection = connect_to_database()
+    exists = execute_query(connection, check_query, (name,))
+    
+    if exists:
+        print("El usuario ya existe, no se intentará el registro.")
+        close_connection(connection)
+        return False
+
     query = "INSERT INTO users (username, password, date_reg, user_reg) VALUES (%s, %s, NOW(), (SELECT COUNT(*) + 1 FROM users AS t));"
     connection = connect_to_database()
     results = execute_query(connection, query, (name, pwd))
@@ -295,7 +304,7 @@ def checkUser(user):
 
 def userExists(user):
     usuarios = get_users()
-    list_users = []
+    list_users = list(str(usuarios.get("username")))
 
     for id in usuarios:
         list_users.append(usuarios[id]["username"])
@@ -319,7 +328,6 @@ def cifrar(texto):
         else:
             resultado += caracter
     return resultado
-
 
 def descifrar(texto):
     abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz1234567890!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¿€¬ºª"

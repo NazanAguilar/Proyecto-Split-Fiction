@@ -24,17 +24,16 @@ while not salir:
             comp_user = checkUser(user) 
         
         in_users = userExists(user)
+        
         if in_users:
             comp_user = False
         else:
             comp_pass = False
 
         while not comp_pass:
-            comp_pass = False
-            if comp_pass == False:
-                password = input("Password:\n")
-                comp_pass = checkPassword(password)
-            else:
-                print
-            menu0 = True
-            create_user = False
+            password = input("Password:\n")
+            comp_pass = checkPassword(password)
+            if comp_pass:
+                add_user(user,password)
+                menu0 = True
+                create_user = False

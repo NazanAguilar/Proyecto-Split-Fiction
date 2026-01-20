@@ -57,15 +57,3 @@ def execute_query(connection, query, params = None):
 
 def execute(self, func, args, msg=None, level=1):
     util.execute(func, args, msg, dry_run=self.dry_run)
-
-def add_user(name,pwd):
-
-    query = "INSERT INTO users (username, password, date_reg, user_reg) " \
-    "VALUES (%s, %s, NOW(), (SELECT COUNT(*) + 1 FROM users AS t));"
-    connection = connect_to_database()
-    results = execute_query(connection, query, (name, pwd))
-    if connection:
-        connection.commit() 
-        close_connection(connection)
-
-add_user("zsdgfsg","marc")
