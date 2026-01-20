@@ -3,93 +3,84 @@ from Funcions_programa.Variables import *
 
 #FUNCIONES BBDD
 def get_characters():
-    """Consulta la tabla de Partidas y devuelve los resultados como un diccionario."""
-    query = "SELECT * FROM characters;"  # Consulta a la tabla Partidas
+    query = "SELECT * FROM characters;"
     connection = connect_to_database()
-
     if connection:
         results = execute_query(connection, query)
         close_connection(connection)
         if results:
-            # Diccionario con ID_Partida como clave
-            partidas_dict = {
-                row['id_characters']: row['name']
-                 for row in results
-            }
-            return partidas_dict
-        return results
+            char_dict = {}
+            for row in results:
+                char_dict[row['id_characters']] = {
+                    "name": row['name'],
+                    "description": row['description']
+                }
+            return char_dict
     return {}
 
 def get_users():
-    """Consulta la tabla de Partidas y devuelve los resultados como un diccionario."""
-    query = "SELECT * FROM users;"  # Consulta a la tabla Partidas
+    query = "SELECT * FROM users;"  
     connection = connect_to_database()
 
     if connection:
         results = execute_query(connection, query)
         close_connection(connection)
         if results:
-            users_dict = {
-                row['id_users']: {
+            users_dict = {}
+
+            for row in results:
+                users_dict[row['id_users']] = {
                     "username": row['username'],
                     "password": row['password'],
                     "date_reg": row['date_reg'],
                     "user_reg": row['user_reg'],
                     "date_mod": row['date_mod'],
                     "user_mod": row['user_mod']
-                } for row in results
-            }
+                } 
+
             return users_dict
-        return results
+        return {}
     return {}
 
 def get_adventures():
-    """Consulta la tabla de Partidas y devuelve los resultados como un diccionario."""
-    query = "SELECT * FROM adventures;"  # Consulta a la tabla Partidas
+    """Consulta las aventuras y sus personajes asociados."""
+    query = "SELECT * FROM adventures;"
     connection = connect_to_database()
 
     if connection:
         results = execute_query(connection, query)
-        close_connection(connection)
         if results:
-            adventures_dict = {
-                row['id_adventures']: {
+            # Construimos el diccionario base
+            adventures_dict = {}
+            for row in results:
+                adventures_dict[row['id_adventures']] = {
                     "name": row['name'],
-                    "description": row['description']
-                } for row in results
-            }            
+                    "description": row['description'],
+                    "characters": [] # Lista vacía para cada aventura
+                }
             
-            adventures_dict["characters"] = []
-            connection = connect_to_database()
+            # Segunda consulta para los personajes
+            query_char = "SELECT fk_adventure_characters_characters " + \
+                         "FROM adventure_characters " + \
+                         "WHERE fk_adventure_characters_adventures = %s;"
 
-            query = "SELECT fk_adventure_characters_characters from adventure_characters where fk_adventure_characters_adventures = %s;"
-
-            for key in adventures_dict:
-                results = execute_query(connection, query, (key))
-
-                adv_characters = [
-                                row['fk_adventure_characters_characters']
-                                for row in results
-                            ]
-                
-                for character in adv_characters:
-                    adventures_dict["characters"].append(character)
-        
+            for id_adv in adventures_dict:
+                char_results = execute_query(connection, query_char, (id_adv,))
+                if char_results:
+                    for char_row in char_results:
+                        adventures_dict[id_adv]["characters"].append(
+                            char_row['fk_adventure_characters_characters']
+                        )
+            
+            close_connection(connection)
             return adventures_dict
+            
+        close_connection(connection)
         return results
     return {}
 
 def add_user(name,pwd):
     pwd = cifrar(pwd)
-
-    check_query = "SELECT 1 FROM users WHERE username = %s"
-    connection = connect_to_database()
-    exists = execute_query(connection, check_query, (name,))
-    
-    if exists:
-        print("El usuario ya existe, no se intentará el registro.")
-        close_connection(connection)
-        return False
 
     query = "INSERT INTO users (username, password, date_reg, user_reg) VALUES (%s, %s, NOW(), (SELECT COUNT(*) + 1 FROM users AS t));"
     connection = connect_to_database()
@@ -152,19 +143,22 @@ def getFormatedBodyColumns(tupla_texts,tupla_sizes,margin=0):
 
     return resultado
 
-def getFormatedAdventures(adventures):
-    cabezera = getHeadeForTableFromTuples(("Id Adventure","Adventure","Description"),(15,40,50),title="Adventures")
+def getFormatedAdventures():
+    cabezera = getHeadeForTableFromTuples(("Id", "Adventure", "Description"), (15, 40, 50), title="Adventures")
     datos = ""
-
-    for i in range(len(adventures)):
-        id = str(i+1)
-        nombre = adventures[i+1]["Name"]
-        descripcion = adventures[i+1]["Description"]
-        columnas = (id,nombre,descripcion)
-        espaciado = (15,40,50)
-        datos += getFormatedBodyColumns(columnas,espaciado)
     
-    return cabezera + datos 
+    adventures = get_adventures()
+
+    for adv_id in adventures:
+        id_str = str(adv_id)
+        nombre = adventures[adv_id]["name"]
+        descripcion = adventures[adv_id]["description"]
+        
+        columnas = (id_str, nombre, descripcion)
+        espaciado = (15, 40, 50)
+        datos = datos + getFormatedBodyColumns(columnas, espaciado)
+    
+    return cabezera + datos
 
 def getHeadeForTableFromTuples(t_name_columns,t_size_columns,title=""):
     resultado = title.center(105,"=") + "\n"*3
@@ -256,36 +250,37 @@ def checkPassword(password):
     min_corr = False
     num_corr = False
 
-    if len(password) >= 8 and len(password) <= 12:
-        if " " in password:
-            print("Password cannot contain spaces")
-        
-        else:
-            for i in range(len(password)):
-                if password[i] in accentos:
-                    print("Accents are not allowed")
-                    return False
-                if password[i] in esp:
-                    especial_corr = True
-                if password[i] in mayus:
-                    may_corr = True
-                if password[i] in num:
-                    num_corr = True
-                if password[i] in minus:
-                    min_corr = True
-            if especial_corr == False:
-                print("Password has to contain some especial character")
-            else:
-                if num_corr == False:
-                    print("Password has to contain some digit")
-                else:
-                    if may_corr == False or min_corr == False:
-                        print("Password have to include some uppercase and some lowercase")
-                    else:
-                        return True
-    else:
+    if len(password) < 8 or len(password) > 12:
         print("Length of password is not correct")
-    return False
+        return False
+    if " " in password:
+        print("Password cannot contain spaces")
+        return False
+        
+    for letra in password:
+        if letra in accentos:
+            print("Accents are not allowed")
+            return False
+        if letra in esp:
+            especial_corr = True
+        if letra in mayus:
+            may_corr = True
+        if letra in num:
+            num_corr = True
+        if letra in minus:
+            min_corr = True
+    if especial_corr == False:
+        print("Password has to contain some especial character")
+        return False
+    if num_corr == False:
+        print("Password has to contain some digit")
+        return False
+    if may_corr == False or min_corr == False:
+        print("Password have to include some uppercase and some lowercase")
+        return False
+    
+    return True
+        
 
 def checkUser(user):
     accentos = "áàéèíìóòúùÁÀÉÈÍÌÓÒÚÙ"    

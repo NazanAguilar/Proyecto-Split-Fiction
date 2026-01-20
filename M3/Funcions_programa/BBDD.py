@@ -32,7 +32,7 @@ def connect_to_database():
         #print("Conectado a la base de datos")
         return connection
     except pymysql.MySQLError as e:
-        print(f"Error al conectar a la base de datos: {e}")
+        print("Error al conectar a la base de datos: {}".format(e))
         return None
 
 def close_connection(connection):
@@ -52,7 +52,7 @@ def execute_query(connection, query, params = None):
             results = cursor.fetchall()
             return results
     except pymysql.MySQLError as e:
-        print(f"Error al ejecutar la consulta: {e}")
+        print("Error al ejecutar la consulta: {}".format(e))
         return None
 
 def execute(self, func, args, msg=None, level=1):
