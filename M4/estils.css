@@ -258,6 +258,45 @@ input:invalid, textarea:invalid {
   animation-delay: 1s;
 }
 
+.users table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--dark-soft);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.users th,
+.users td {
+  padding: 15px 20px;
+  text-align: left;
+}
+
+.users thead {
+  background: rgba(90, 24, 154, 0.8);
+}
+
+.users th {
+  font-weight: 600;
+}
+
+.users tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.users tbody tr:hover {
+  background: rgba(241, 196, 15, 0.1);
+}
+
+.users a {
+  color: var(--secondary);
+}
+
+/* Wrapper per fer-la responsive */
+.table-wrapper {
+  overflow-x: auto;
+}
+
 @keyframes draw {
   to {
     stroke-dashoffset: 0;
@@ -326,5 +365,9 @@ input:invalid, textarea:invalid {
 
   .contact-info iframe {
     height: 300px;
+  }
+
+  .table-wrapper {
+  overflow-x: auto;
   }
 }
