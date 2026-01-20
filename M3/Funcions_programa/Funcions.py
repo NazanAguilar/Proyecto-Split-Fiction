@@ -299,8 +299,6 @@ def userExists(user):
 
     for id in usuarios:
         list_users.append(usuarios[id]["username"])
-    
-    print(user in list_users)
 
     if user in list_users:
         print("User already in use")

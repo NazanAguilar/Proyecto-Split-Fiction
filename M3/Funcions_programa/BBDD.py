@@ -1,13 +1,21 @@
 import pymysql
 from distutils import util
 
-# Configuración de conexión
-db_config = {
-    'host': 'ieticloudpro.ieti.cat',
+"""db_config = {
+    'host': '127.0.0.1', #ieticloudpro.ieti.cat
     'user': 'equipo7',
     'password': 'P@ssw0rd',
     'database': 'equipo7_SplitFiction',
-    'puerto':20127
+    'puerto': 3307
+}"""
+
+
+# Configuración de conexión
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'admin',
+    'database': 'split_fiction',
 }
 
 def connect_to_database():
@@ -19,10 +27,9 @@ def connect_to_database():
             user=db_config['user'],
             password=db_config['password'],
             database=db_config['database'],
-            port=db_config['puerto']
         )
 
-        print("Conectado a la base de datos")
+        #print("Conectado a la base de datos")
         return connection
     except pymysql.MySQLError as e:
         print(f"Error al conectar a la base de datos: {e}")
@@ -32,7 +39,7 @@ def close_connection(connection):
     """Cierra la conexión con la base de datos."""
     if connection:
         connection.close()
-        print("Conexión cerrada.")
+        #print("Conexión cerrada.")
 
 def execute_query(connection, query, params = None):
     """Ejecuta una consulta SQL y devuelve los resultados."""
@@ -51,4 +58,14 @@ def execute_query(connection, query, params = None):
 def execute(self, func, args, msg=None, level=1):
     util.execute(func, args, msg, dry_run=self.dry_run)
 
-connect_to_database()
+def add_user(name,pwd):
+
+    query = "INSERT INTO users (username, password, date_reg, user_reg) " \
+    "VALUES (%s, %s, NOW(), (SELECT COUNT(*) + 1 FROM users AS t));"
+    connection = connect_to_database()
+    results = execute_query(connection, query, (name, pwd))
+    if connection:
+        connection.commit() 
+        close_connection(connection)
+
+add_user("zsdgfsg","marc")
