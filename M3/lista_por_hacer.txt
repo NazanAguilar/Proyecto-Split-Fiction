@@ -29,9 +29,6 @@ Crear las siguientes funciones para el programa pero se necesita la base de dato
     Ens retornarà el diccionari idAnswers_ByStep_Adventure una vegada hàgim seleccionat
     una aventura.
     Només tindrem els passos relacionats amb l'aventura que estem jugant.
-  
-  - get_adventures_with_chars()
-    Ens retornarà el diccionari adventures
 
   - get_id_bystep_adventure()
     Ens retornarà el diccionari id_by_steps amb només els passos relacionats amb l'aventura
@@ -40,9 +37,6 @@ Crear las siguientes funciones para el programa pero se necesita la base de dato
   - get_first_step_adventure()
     Un cop seleccionada una aventura, aquesta funció ens serveix per trobar el primer pas
     d'aquesta aventura.
-
-  - get_characters()
-    Ens retorna el diccionari characters
 
   - getReplayAdventures()
     Ens retorna el diccionari replayAdventures
@@ -56,10 +50,6 @@ Crear las siguientes funciones para el programa pero se necesita la base de dato
     Aquesta elecció ens porta al pas 108 on escollim l'opció 110 i acaba l'aventura.
     En aquest cas, si escollim reviure aquesta aventura, la funció ens tornaria:
     ((101, 101), (103, 108), (108, 110))
-
-  - getIdGames()
-    Ens retorna una tupla amb tots els id de game que s'han jugat, després la utilitzarem per
-    a establir un id de joc que no existeixi en la bbdd
 
   - insertCurrentGame(idGame,idUser,isChar,idAdventure)
     Aquesta funció insereix un nou registre de “game” a la BBDD

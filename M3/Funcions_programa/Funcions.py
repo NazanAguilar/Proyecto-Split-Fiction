@@ -2,47 +2,7 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 
 #FUNCIONES BBDD
-def get_characters():
-    query = "SELECT * FROM characters;"
-    connection = connect_to_database()
-    if connection:
-        results = execute_query(connection, query)
-        close_connection(connection)
-        if results:
-            char_dict = {}
-            for row in results:
-                char_dict[row['id_characters']] = {
-                    "name": row['name'],
-                    "description": row['description']
-                }
-            return char_dict
-    return {}
-
-def get_users():
-    query = "SELECT * FROM users;"  
-    connection = connect_to_database()
-
-    if connection:
-        results = execute_query(connection, query)
-        close_connection(connection)
-        if results:
-            users_dict = {}
-
-            for row in results:
-                users_dict[row['id_users']] = {
-                    "username": row['username'],
-                    "password": row['password'],
-                    "date_reg": row['date_reg'],
-                    "user_reg": row['user_reg'],
-                    "date_mod": row['date_mod'],
-                    "user_mod": row['user_mod']
-                } 
-
-            return users_dict
-        return {}
-    return {}
-
-def get_adventures():
+def get_adventures_with_chars():
     """Consulta las aventuras y sus personajes asociados."""
     query = "SELECT * FROM adventures;"
     connection = connect_to_database()
@@ -77,6 +37,57 @@ def get_adventures():
             
         close_connection(connection)
         return results
+    return {}
+
+def get_characters():
+    query = "SELECT * FROM characters;"
+    connection = connect_to_database()
+    if connection:
+        results = execute_query(connection, query)
+        close_connection(connection)
+        if results:
+            char_dict = {}
+            for row in results:
+                char_dict[row['id_characters']] = row['name']
+                
+            return char_dict
+    return {}
+
+def getIdGames():
+    query = "SELECT * FROM game;"
+    connection = connect_to_database()
+    if connection:
+        results = execute_query(connection, query)
+        close_connection(connection)
+        if results:
+            char_dict = ()
+            for row in results:
+                char_dict += (row['id_game'],)
+                
+            return char_dict
+    return {}
+
+def insertCurrentGame(idGame,idUser,isChar,idAdventure):
+    
+
+def getUsers():
+    query = "SELECT * FROM users;"  
+    connection = connect_to_database()
+
+    if connection:
+        results = execute_query(connection, query)
+        close_connection(connection)
+        if results:
+            users_dict = {}
+
+            for row in results:
+                users_dict[row['username']] = {
+                    "password": row['password'],
+                    "idUser": row['id_users']
+                } 
+
+            return users_dict
+        return {}
     return {}
 
 def add_user(name,pwd):
@@ -147,7 +158,7 @@ def getFormatedAdventures():
     cabezera = getHeadeForTableFromTuples(("Id", "Adventure", "Description"), (15, 40, 50), title="Adventures")
     datos = ""
     
-    adventures = get_adventures()
+    adventures = get_adventures_with_chars()
 
     for adv_id in adventures:
         id_str = str(adv_id)
@@ -281,7 +292,6 @@ def checkPassword(password):
     
     return True
         
-
 def checkUser(user):
     accentos = "áàéèíìóòúùÁÀÉÈÍÌÓÒÚÙ"    
     
@@ -298,13 +308,9 @@ def checkUser(user):
         print("Length of username have to be longer than 5 and shorter than 11")
 
 def userExists(user):
-    usuarios = get_users()
-    list_users = list(str(usuarios.get("username")))
+    users_dict = getUsers()
 
-    for id in usuarios:
-        list_users.append(usuarios[id]["username"])
-
-    if user in list_users:
+    if user in users_dict:
         print("User already in use")
         return True
     else:
@@ -335,6 +341,26 @@ def descifrar(texto):
         else:
             resultado += caracter
     return resultado
+
+def login_user(name, pwd):
+    """Verifica las credenciales y devuelve los datos del usuario si son correctos."""
+    # Primero ciframos la contraseña recibida para compararla con la de la BBDD
+    pwd_cifrada = cifrar(pwd)
+    
+    query = "SELECT * FROM users WHERE username = %s AND password = %s;"
+    connection = connect_to_database()
+    
+    if connection:
+        # execute_query ya nos devuelve la lista de resultados (o una lista vacía)
+        results = execute_query(connection, query, (name, pwd_cifrada))
+        close_connection(connection)
+        
+        if results:
+            # Como username es UNIQUE, solo habrá un resultado (results[0])
+            return results[0] 
+    
+    return None
+
 
 #-----------------PRUEBAS----------------------
 

@@ -2,14 +2,35 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 from Funcions_programa.Funcions import *
 
+print(getIdGames())
+input()
+
 while not salir:
-    while menu0:
-        if not login:
-            opc = int(getOpt(textMenu0_login,inputOptText,rangeList=lista_menu0,exceptions=excepciones))
+
+    while not login and user_login == None:
+        print("--- LOGIN ---")
+        user_input = input("Usuario: ")
+        pass_input = input("Contraseña: ")
+        
+        # Llamamos a la función de la BBDD que creamos antes
+        # Suponiendo que la llamaste login_user o similar
+        resultado = login_user(user_input, pass_input) 
+        
+        if resultado:
+            menu0 = True
+            user_login = resultado # Guardamos los datos del usuario (id, nombre...)
+            login = True
+            print("Bienvenido de nuevo")
         else:
-            opc = int(getOpt(textMenu0_logout,inputOptText,rangeList=lista_menu0,exceptions=excepciones))
+            print("Usuario o contraseña incorrectos")
+
+
+    while menu0:
+        opc = int(getOpt(textMenu0_logout,inputOptText,rangeList=lista_menu0,exceptions=excepciones))
         if opc == 1:
-            print("iniciando sesion")
+            login = False
+            user_login = None
+            menu0 = False
         elif opc == 2:
             create_user = True
             menu0 = False
