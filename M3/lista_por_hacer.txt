@@ -51,22 +51,6 @@ Crear las siguientes funciones para el programa pero se necesita la base de dato
     En aquest cas, si escollim reviure aquesta aventura, la funció ens tornaria:
     ((101, 101), (103, 108), (108, 110))
 
-  - insertCurrentGame(idGame,idUser,isChar,idAdventure)
-    Aquesta funció insereix un nou registre de “game” a la BBDD
-
-  - getUsers()
-    Aquesta funció ens retorna un diccionari del tipus:
-    {'NomUsuari': {'password': 'passwordDelUsuari', 'idUser': id de l’usuari}, 'Jordi': {'password':
-    '1234', 'idUser': 2}}
-
-  - getUserIds()
-    Ens retorna una llista composta de dues llistes, la primera els noms d’usuaris, la segona
-    els id dels usuaris, exemple:
-    [['ester23', 'Jordi', 'MarioR', 'MarioT', 'PedroG', 'Rafa12'], [0, 2, 5, 3, 4, 1]]
-  
-  - insertUser(id, user,password)
-    Aquesta funció ens servirà per inserir un usuari a la BBDD un cop hàgim creat.
-
   - get_table(query)
     Aquesta funció rebrà una query i ens retornarà el resultat de la query en una tupla de
     tuples.

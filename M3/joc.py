@@ -2,7 +2,7 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 from Funcions_programa.Funcions import *
 
-print(getIdGames())
+print(checkUserbdd("dmin","adin"))
 input()
 
 while not salir:
@@ -58,7 +58,7 @@ while not salir:
         while not comp_pass:
             password = input("Password:\n")
             if checkPassword(password):
-                add_user(user,password)
+                insertUser(len(getUserIds()[1]),user,password)
                 comp_pass = True
                 menu0 = True
                 create_user = False

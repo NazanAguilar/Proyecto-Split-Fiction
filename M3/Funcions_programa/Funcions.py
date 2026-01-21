@@ -60,15 +60,22 @@ def getIdGames():
         results = execute_query(connection, query)
         close_connection(connection)
         if results:
-            char_dict = ()
+            id_game_dict = ()
             for row in results:
-                char_dict += (row['id_game'],)
+                id_game_dict += (row['id_game'],)
                 
-            return char_dict
+            return id_game_dict
     return {}
 
 def insertCurrentGame(idGame,idUser,isChar,idAdventure):
-    
+    query = "INSERT INTO game ( fk_game_users,fk_game_characters,fk_game_adventures,game_date,date_reg,user_reg)" \
+    " VALUES (%s, %s, %s, NOW(), NOW(), %s);"
+
+    connection = connect_to_database()
+    execute_query(connection, query, (idGame, isChar, idAdventure, idUser))
+    if connection:
+        connection.commit() 
+        close_connection(connection)
 
 def getUsers():
     query = "SELECT * FROM users;"  
@@ -90,15 +97,67 @@ def getUsers():
         return {}
     return {}
 
-def add_user(name,pwd):
-    pwd = cifrar(pwd)
-
-    query = "INSERT INTO users (username, password, date_reg, user_reg) VALUES (%s, %s, NOW(), (SELECT COUNT(*) + 1 FROM users AS t));"
+def getUserIds():
+    query = "SELECT * FROM users;"  
     connection = connect_to_database()
-    results = execute_query(connection, query, (name, pwd))
+
     if connection:
-        connection.commit() 
+        results = execute_query(connection, query)
         close_connection(connection)
+        if results:
+            user_list_ids = [[],[]]
+
+            for row in results:
+                user_list_ids[0].append(row['username'])
+                user_list_ids[1].append(row['id_users'])
+
+            return user_list_ids
+        return {}
+    return {}
+
+def insertUser(id,name,pwd):
+    pwd = cifrar(pwd)
+    connection = connect_to_database()
+    
+    if connection:
+        id_actual = id
+        insert = False
+        while not insert:
+            # 1. Comprobamos si el ID ya existe
+            query_check = "SELECT 1 FROM users WHERE id_users = %s;"
+            exists = execute_query(connection, query_check, (id_actual,))
+
+            if not exists:
+                query = "INSERT INTO users (id_users, username, password, date_reg, user_reg)" \
+                " VALUES (%s, %s, %s, NOW(), %s);"
+                execute_query(connection, query, (id_actual, name, pwd, id_actual))
+                connection.commit() 
+                insert = True
+                print("User {} Created".format(name)) 
+                input()
+
+            else:
+                id_actual = id_actual + 1
+        close_connection(connection)
+        return
+    return None
+
+def checkUserbdd(user,password):
+    users_dict = getUsers()
+    comp_pass = ""
+
+    if not user in users_dict:
+        return 0
+    else:
+        for user_dict in users_dict:
+            if user_dict == user:
+                comp_pass = descifrar(users_dict[user_dict]["password"])
+                break
+        if comp_pass == password:
+            return 1
+        else:
+            return -1 
+    
 
 #FUNCIONES PROGRAMA
 
