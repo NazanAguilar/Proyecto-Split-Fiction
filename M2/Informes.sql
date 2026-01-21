@@ -1,44 +1,43 @@
--- =========================
--- INFORME 1
--- =========================
-SELECT 
-    a.name AS aventura,
-    s.id_steps AS id_pas,
-    s.description AS descripcio_pas,
-    d.id_decisions AS id_decisio,
-    d.description AS accio,
-    COUNT(c.id_choices) AS cops_triada
-FROM adventures a
-JOIN steps s ON s.fk_steps_adventures = a.id_adventures
-JOIN decisions d ON d.fk_decisions_steps = s.id_steps
-LEFT JOIN choices c ON c.fk_choices_decisions = d.id_decisions
-GROUP BY a.id_adventures, s.id_steps, d.id_decisions
-ORDER BY a.name, s.id_steps, cops_triada DESC;
+use split_fiction;
 
--- =========================
--- INFORME 2
--- =========================
+-- Informe 1: Resposta més usada
+
 SELECT 
-    u.username,
-    COUNT(g.id_game) AS partides_jugades,
-    MIN(g.game_date) AS primer_cop_jugat
+    a.name AS "ID AVENTURA - NOMBRE",
+    s.id_steps AS "ID Paso",
+    LEFT(s.description, 50) AS "PASO DESCRIPCION",
+    d.description AS "RESPUESTAS",
+    COUNT(c.id_choices) AS "NUMERO VECES SELECCIONADA"
+FROM choices c
+JOIN decisions d ON c.fk_choices_decisions = d.id_decisions
+JOIN steps s ON c.fk_choices_steps = s.id_steps
+JOIN adventures a ON s.fk_steps_adventures = a.id_adventures
+GROUP BY a.name, s.id_steps, d.description
+ORDER BY a.name ASC, "NUMERO VECES SELECCIONADA" DESC;
+
+-- Informe 2: Jugador que més vegades ha jugat
+
+SELECT 
+    u.username AS "PLAYER NAME",
+    COUNT(g.id_game) AS "GAMES PLAYED",
+    u.date_reg AS "REGISTRATION DATES"
 FROM users u
-JOIN game g ON g.fk_game_users = u.id_users
+JOIN game g ON u.id_users = g.fk_game_users
 GROUP BY u.id_users
-ORDER BY partides_jugades DESC, primer_cop_jugat ASC
+ORDER BY 
+    "GAMES PLAYED" DESC, -- Primero el que más ha jugado
+    u.date_reg ASC           -- Si hay empate, el que se registró antes (más antiguo)
 LIMIT 1;
 
+-- Informe 3: Quantes aventures ha jugat l'usuari X
 
--- =========================
--- INFORME 3
--- =========================
-SELECT
+SELECT 
     a.id_adventures AS idadventure,
-    a.name AS Name,
-    g.game_date AS date
+    a.name AS "Name",
+    MAX(g.game_date) AS "date"
 FROM game g
-JOIN adventures a ON g.fk_game_adventures = a.id_adventures
 JOIN users u ON g.fk_game_users = u.id_users
-WHERE u.username = 'rafa'
-ORDER BY g.game_date DESC;
-
+JOIN adventures a ON g.fk_game_adventures = a.id_adventures
+WHERE u.username = "admin"
+GROUP BY a.id_adventures, a.name
+ORDER BY Ultima_Vez_Jugada DESC;

@@ -2,7 +2,7 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 from Funcions_programa.Funcions import *
 
-print(checkUserbdd("dmin","adin"))
+print(autoreplay_games(1))
 input()
 
 while not salir:

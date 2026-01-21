@@ -420,55 +420,106 @@ def login_user(name, pwd):
     
     return None
 
+# =========================
+# ORDENACIÓN BURBUJA
+# =========================
 
-#-----------------PRUEBAS----------------------
+def bubble_sort_by_date(variable):
+    n = len(variable)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            # Comparamos las fechas (índice 2)
+            if variable[j][2] > variable[j + 1][2]:
+                variable[j], variable[j + 1] = variable[j + 1], variable[j]
 
-#print(formatText(text1,20,split=" "))
+# =========================
+# AUTOREPLAY DE PARTIDAS
+# =========================
 
-#print(getHeader("Adventures"))
+def autoreplay_games(user_id):
+    connection = connect_to_database()
+    if not connection:
+        return
 
-#print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
+    # Obtener partidas del usuario
+    query_games = """
+        SELECT g.id_game, g.game_date, a.name
+        FROM game g
+        JOIN adventures a ON g.fk_game_adventures = a.id_adventures
+        WHERE g.fk_game_users = %s
+    """
+    games = execute_query(connection, query_games, (user_id,))
 
-#print(getFormatedAdventures(adventures))
+    if not games:
+        print("No tienes partidas guardadas.")
+        close_connection(connection)
+        return
 
-#print(getHeadeForTableFromTuples(("column1","column2","column3"),(10,20,30)))
 
-#print(getTableFromDict(tuple_of_keys, weigth_of_columns, diccionari))
+    # Crear matriz: [num, id_game, fecha, nombre]
+    matrix = []
+    counter = 1
+    for g in games:
+        matrix.append([counter, g["id_game"], g["game_date"], g["name"]])
+        counter += 1
 
-"""opc = getOpt(textOpts,inputOptText,rangeList=lista,exceptions=excepciones)
-print(opc)
-print(type(opc))
-opc = getOpt(textOpts,inputOptText,dictionary=dic_range,exceptions=excepciones)
-print(opc)
-print(type(opc))"""
+    # Ordenar por fecha
+    bubble_sort_by_date(matrix)
 
-"""print(getFormatedTable((('ID AVENTURA - NOMBRE', 'ID PASO - DESCRIPCION', 'ID RESPUESTA - DESCRIPCION', 'NUMERO VECES SELECCIONADA'), 
-                        ('10 - Todos los h├®roes necesitan su princesa', '101 - Son las 6 de la ma├▒ana, %personaje% est├í profundamente dormido. Le suena la alarma!', '101 - Apaga la alarma porque quiere dormir, han sido d├¡as muy duros y %personaje% necesita un descanso.', 7)
-                        , ('10 - Todos los h├®roes necesitan su princesa', '103 - Nuestro h├®roe %personaje% se viste r├ípidamente y va an direcci├│n al ciber, hay mucho jaleo en la calle, tambi├®n mucha polic├¡a.', '108 - Entra en el ciber a revisar si la princesa Wyoming sigue dentro.', 5))
-                       ,title="Most used answer"))"""
+    # Mostrar partidas
+    print("\n=== PARTIDAS DISPONIBLES ===")
+    for row in matrix:
+        print(str(row[0]) + ") " + str(row[3]) + " (" + str(row[2]) + ")")
 
-# --- EJEMPLOS DE PRUEBA PARA LA CONTRASEÑA---
+    # Elegir partida
+    try:
+        choice = int(input("\nElige una partida: "))
+    except ValueError:
+        print("Entrada no válida.")
+        close_connection(connection)
+        return
 
-"""print("--- Test 1: Longitud corta ---")
-print(checkPassword("Ab1!")) 
+    selected_game_id = None
+    for row in matrix:
+        if row[0] == choice:
+            selected_game_id = row[1]
+            break
 
-print("\n--- Test 2: Longitud larga ---")
-print(checkPassword("PasswordMuyLarga123!") )
+    if not selected_game_id:
+        print("Selección inválida.")
+        close_connection(connection)
+        return
 
-print("\n--- Test 3: Contiene espacios ---")
-print(checkPassword("Ab 123456!") )
+    # Autoreplay
+    query_replay = """
+        SELECT s.description AS step_text,
+               d.description AS decision_text,
+               d.result_text
+        FROM choices c
+        JOIN steps s ON c.fk_choices_steps = s.id_steps
+        JOIN decisions d ON c.fk_choices_decisions = d.id_decisions
+        WHERE c.fk_choices_game = %s
+        ORDER BY c.id_choices ASC;
+    """
+    replay_data = execute_query(connection, query_replay, (selected_game_id,))
 
-print("\n--- Test 4: Sin caracteres especiales ---")
-print(checkPassword("Password123") )
+    print("\n=== AUTOREPLAY DE LA PARTIDA ===\n")
+    if replay_data:
+        for r in replay_data:
+            print("ESCENA:")
+            print(formatText(r["step_text"], 100, ";")) # Usamos tu función de formato
+            print("\nDECISIÓN TOMADA: " + str(r["decision_text"]))
+            if r["result_text"]:
+                print("RESULTADO: " + str(r["result_text"]))
+            input("Enter to continue")
+            print("\n" + "-"*50 + "\n")
+    
+    close_connection(connection)
 
-print("\n--- Test 5: Sin números (dígitos) ---")
-print(checkPassword("Password!!") )
+# =========================
+# EJECUCIÓN
+# =========================
 
-print("\n--- Test 6: Sin mayúsculas o sin minúsculas ---")
-print(checkPassword("password123!") )
-print(checkPassword("PASSWORD123!") )
-
-print("\n--- Test 7: TODO CORRECTO (No imprimirá nada) ---")
-print(checkPassword("Admin123!"))"""
-
-#print(userExists("Jordi"))
+if __name__ == "__main__":
+    # Usuario logueado (ejemplo: admin = 1)
+    autoreplay_games(user_id=1)
