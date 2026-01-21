@@ -2,9 +2,6 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 from Funcions_programa.Funcions import *
 
-print(autoreplay_games(1))
-input()
-
 while not salir:
 
     while not login and user_login == None:

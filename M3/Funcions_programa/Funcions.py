@@ -115,12 +115,12 @@ def getUserIds():
         return {}
     return {}
 
-def insertUser(id,name,pwd):
+def insertUser(name,pwd):
     pwd = cifrar(pwd)
     connection = connect_to_database()
     
     if connection:
-        id_actual = id
+        id_actual = 0
         insert = False
         while not insert:
             # 1. Comprobamos si el ID ya existe
