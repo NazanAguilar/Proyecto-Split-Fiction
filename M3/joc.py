@@ -2,9 +2,6 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 from Funcions_programa.Funcions import *
 
-showReport1()
-input()
-
 # =====================================
 # PROGRAMA PRINCIPAL
 # =====================================
