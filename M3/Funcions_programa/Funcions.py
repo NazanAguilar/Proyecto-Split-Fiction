@@ -690,15 +690,8 @@ def play_game(user_id):
     # =========================
     # 2. ELEGIR PERSONAJE
     # =========================
-    characters = execute_query(
-        connection,
-        "SELECT * FROM characters WHERE id_characters IN ( \
-            SELECT fk_adventure_characters_characters \
-            FROM adventure_characters \
-            WHERE fk_adventure_characters_adventures = %s \
-        );",
-        (adventure_id,)
-    )
+    # CAMBIO: mostrar todos los personajes disponibles, no solo los asignados a la aventura
+    characters = execute_query(connection, "SELECT * FROM characters;")
 
     print("\nPERSONAJES DISPONIBLES:\n")
     for ch in characters:
@@ -811,7 +804,8 @@ def play_game(user_id):
                 decision_data = d
                 break
 
-        execute_query(connection,
+        execute_query(
+            connection,
             """
             INSERT INTO choices
             (fk_choices_game, fk_choices_steps, fk_choices_decisions, date_reg, user_reg)
@@ -832,6 +826,7 @@ def play_game(user_id):
         current_step = decision_data["fk_decisions_next_step"]
 
     close_connection(connection)
+
 
 
 def clear_screen():
