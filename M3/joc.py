@@ -130,6 +130,8 @@ while not salir:
             print("\nAquí irán los reportes")
             input("Enter to continue")
 
+
+
         # -------- LOG OUT --------
         elif opc == 4:
             conectado_flg = False

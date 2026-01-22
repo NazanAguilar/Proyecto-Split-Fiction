@@ -198,41 +198,56 @@ def formatText(text,lenLine,split):
 
         return resultado
 
-def printReplayBox(step_text, decision_text, result_text=None, width=88):
+def wrap_text(text, width):
     """
-    Muestra una escena completa (ESCENA + DECISIÓN + RESULTADO)
-    dentro de un único marco.
-    Garantiza que ninguna línea se salga del ancho.
+    Divide texto en líneas sin cortar palabras.
     """
+    if not text:
+        return []
 
-    def print_safe_block(title, text):
+    lines = []
+    for raw_line in text.split("\n"):
+        words = raw_line.split(" ")
+        current = ""
+
+        for word in words:
+            if len(current) + len(word) + 1 > width:
+                lines.append(current.rstrip())
+                current = word + " "
+            else:
+                current += word + " "
+
+        if current:
+            lines.append(current.rstrip())
+
+    return lines
+
+# =========================================================
+# ===================== CAJA REPLAY =======================
+# =========================================================
+
+def printReplayBox(step_text, decision_text, result_text=None, width=88):
+
+    def print_block(title, text):
         print("| " + title.center(width) + " |")
         print("|" + " " * (width + 2) + "|")
 
-        for line in text.split("\n"):
-            while len(line) > width:
-                print("| " + line[:width].ljust(width) + " |")
-                line = line[width:]
+        for line in wrap_text(text, width):
             print("| " + line.ljust(width) + " |")
 
     border = "*" * (width + 4)
     print(border)
 
-    # ESCENA
-    print_safe_block("ESCENA", step_text)
-
-    # DECISIÓN
+    print_block("ESCENA", step_text)
     print("|" + " " * (width + 2) + "|")
-    print_safe_block("DECISIÓN", decision_text)
+    print_block("DECISIÓN", decision_text)
 
-    # RESULTADO (si existe)
     if result_text:
         print("|" + " " * (width + 2) + "|")
-        print_safe_block("RESULTADO", result_text)
+        print_block("RESULTADO", result_text)
 
     print("|" + " " * (width + 2) + "|")
     print(border)
-
 
 def formatTextHistorias(text, max_len, split_char=" "):
     """
@@ -405,8 +420,8 @@ def checkPassword(password):
     min_corr = False
     num_corr = False
 
-    if len(password) < 8:
-        print("Password length has to be minimum 8 ")
+    if len(password) < 8 or len(password) > 12:
+        print("Password length has to be minimum 8 or maximum 12")
         return False
     if " " in password:
         print("Password cannot contain spaces")
@@ -602,11 +617,11 @@ def autoreplay_games(user_id):
             last_next_step = r["fk_decisions_next_step"]
 
             # Formateamos los textos
-            step_text = formatText(r["step_text"], 110, ";")
-            decision_text = formatText(r["decision_text"], 110, ";")
+            step_text = formatText(r["step_text"], 105, ";")
+            decision_text = formatText(r["decision_text"], 105, ";")
 
             if r["result_text"]:
-                result_text = formatText(r["result_text"], 110, ";")
+                result_text = formatText(r["result_text"], 105, ";")
             else:
                 result_text = None
 
