@@ -34,8 +34,10 @@ Motor d'aventures de text on les decisions de l'usuari alteren el curs de la his
 
 *   **/M3**: Conté els arxius del programa.
     *   **/Funcions_programa**: Conté totes les funcions del programa.
-        *   **/__pycache__**: serveix per emmagatzemar Bytecode els archius .pyc que són versions "precompiladas" del   teu codi font (.py) transformades a un llenguatge intermedi anomenat bytecode. Accelerar l'Inici i Gestio Automtic.
-        *   `__init__.py`: Serveix per a identificar els arxius i inicialitzar-los
+        *   **/__pycache__**: Serveix per emmagatzemar Bytecode els arxius .pyc que són versions "precompilades" del   teu codi font (.py) transformades a un llenguatge intermedi anomenat bytecode. Accelerar l'Inici quan s'executa el codi mira si l'arxiu si no ha canviat llavors càrrega el bytecode directament, cosa que estalvia temps de càrrega i Python gestiona automàticament amb una marca de temps i regenera l'arxiu __pycache__.
+        *   `__init__.py`: Permet que es pugui fer `import carpeta.arxiu` i l'arxiu `__init__.py` s'executa automàticament.
+        *   `BBDD.py`: Aquí estan les funcions que siguin sobre la base de dades com per exemple: execute_query, connect_database, etc.
+        *   `Funcions.py`: Aquí estarien totes les funcions de la base de dades.
     *   `joc.py`: Aquí està el programa del joc.
     *   `proves.txt`: Aqui estaran totes les proves que hem anat fent al llarg del projecte omitint el tipic:
             print(no se que) 
