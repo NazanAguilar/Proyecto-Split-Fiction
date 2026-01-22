@@ -30,6 +30,7 @@ Motor d'aventures de text on les decisions de l'usuari alteren el curs de la his
     *   `Split Fiction Create_DB (Nazan Marc Styven).sql`: Creació de taules.
     *   `Split Fiction Alter_DB (Nazan Marc Styven).sql`: Restriccions (PK, FK, Unique).
     *   `Split Fiction Insert_DB (Nazan Marc Styven).sql`: Dades inicials (Aventures, Personatges, Matrix).
+    *   `Informes.sql`: Aqui estan els scripts dels informes
 
 *   **/M3**: Conté els arxius del programa.
     *   **/Funcions_programa**: Conté totes les funcions del programa.
@@ -37,6 +38,7 @@ Motor d'aventures de text on les decisions de l'usuari alteren el curs de la his
         *   `__init__.py`: Permet que es pugui fer `import carpeta.arxiu` i l'arxiu `__init__.py` s'executa automàticament.
         *   `BBDD.py`: Aquí estan les funcions que siguin sobre la base de dades com per exemple: execute_query, connect_database, etc.
         *   `Funcions.py`: Aquí estarien totes les funcions de la base de dades.
+        *   `Variables.py`: Aquí estarien totes les variables que s'utilitzen per a tot.
     *   `joc.py`: Aquí està el programa del joc.
     *   `proves.txt`: Aqui estaran totes les proves que hem anat fent al llarg del projecte omitint el tipic:
             print(no se que) 
