@@ -10,7 +10,6 @@ AWS1 (Choose Your Story) NazanAguilar-MarcLosada-StyvenCatagua
 
 
 
-
 -->Nazan Aguilar:
 
 -Correu: naguilarperez.cf@iesesteveterradas.cat
@@ -42,3 +41,12 @@ Motor d'aventures de text on les decisions de l'usuari alteren el curs de la his
     *   `proves.txt`: Aqui estaran totes les proves que hem anat fent al llarg del projecte omitint el tipic:
             print(no se que) 
             input()
+    
+    **/M4**: Conté la pàgina web pujada al proxmox.
+    *   `index.html`: Pàgina principal del proyecte.
+    *   **`estils.css`**: Estil amb capzalera i peu de pàgina, funcional en totes les pàgines web 
+    *   `instruccions.html`: Instruccions de com es juga el videojoc.
+    *   `historia.html`: Història de que consiteix el videojoc + serie d'imatges en format carrousel on es mostra les imatges de la nostra versió del Split Fiction .
+    *   `sobre_nosaltres.html`: Nom del equip desenvolupador + un video de YouTube.
+    *   `contacte.html`: Formulari (No funcional) + les nostres dades de contacte.
+    *   **/img**: Imatges introduides a la pàgina web.
