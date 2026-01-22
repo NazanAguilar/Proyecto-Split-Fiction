@@ -1,5 +1,6 @@
 from Funcions_programa.BBDD import * 
 from Funcions_programa.Variables import *
+import os
 
 #FUNCIONES BBDD
 def get_adventures_with_chars():
@@ -115,32 +116,45 @@ def getUserIds():
         return {}
     return {}
 
-def insertUser(name,pwd):
+def insertUser(id, name, pwd):
     pwd = cifrar(pwd)
     connection = connect_to_database()
-    
-    if connection:
-        id_actual = 0
-        insert = False
-        while not insert:
-            # 1. Comprobamos si el ID ya existe
+
+    if not connection:
+        return False
+
+    try:
+        # Comprobar si el username ya existe
+        query_user = "SELECT 1 FROM users WHERE username = %s;"
+        exists_user = execute_query(connection, query_user, (name,))
+
+        if exists_user:
+            return False   # Usuario duplicado
+
+        id_actual = id
+        while True:
+            # Comprobar si el ID existe
             query_check = "SELECT 1 FROM users WHERE id_users = %s;"
-            exists = execute_query(connection, query_check, (id_actual,))
+            exists_id = execute_query(connection, query_check, (id_actual,))
 
-            if not exists:
-                query = "INSERT INTO users (id_users, username, password, date_reg, user_reg)" \
-                " VALUES (%s, %s, %s, NOW(), %s);"
+            if not exists_id:
+                query = """
+                    INSERT INTO users (id_users, username, password, date_reg, user_reg)
+                    VALUES (%s, %s, %s, NOW(), %s);
+                """
                 execute_query(connection, query, (id_actual, name, pwd, id_actual))
-                connection.commit() 
-                insert = True
-                print("User {} Created".format(name)) 
-                input()
+                connection.commit()
+                return True   # Usuario creado correctamente
 
-            else:
-                id_actual = id_actual + 1
+            id_actual += 1
+
+    except Exception as e:
+        print("Error creating user:", e)
+        return False
+
+    finally:
         close_connection(connection)
-        return
-    return None
+
 
 def checkUserbdd(user,password):
     users_dict = getUsers()
@@ -179,13 +193,99 @@ def formatText(text,lenLine,split):
                 linia = palabra + " "
             else:
                 linia += palabra + " "
-        
+
         resultado += "\n"+linia
-    
+
         return resultado
 
+def wrap_text(text, width):
+    """
+    Divide texto en líneas sin cortar palabras.
+    """
+    if not text:
+        return []
+
+    lines = []
+    for raw_line in text.split("\n"):
+        words = raw_line.split(" ")
+        current = ""
+
+        for word in words:
+            if len(current) + len(word) + 1 > width:
+                lines.append(current.rstrip())
+                current = word + " "
+            else:
+                current += word + " "
+
+        if current:
+            lines.append(current.rstrip())
+
+    return lines
+
+# =========================================================
+# ===================== CAJA REPLAY =======================
+# =========================================================
+
+def printReplayBox(step_text, decision_text, result_text=None, width=88):
+
+    def print_block(title, text):
+        print("| " + title.center(width) + " |")
+        print("|" + " " * (width + 2) + "|")
+
+        for line in wrap_text(text, width):
+            print("| " + line.ljust(width) + " |")
+
+    border = "*" * (width + 4)
+    print(border)
+
+    print_block("ESCENA", step_text)
+    print("|" + " " * (width + 2) + "|")
+    print_block("DECISIÓN", decision_text)
+
+    if result_text:
+        print("|" + " " * (width + 2) + "|")
+        print_block("RESULTADO", result_text)
+
+    print("|" + " " * (width + 2) + "|")
+    print(border)
+
+def formatTextHistorias(text, max_len, split_char=" "):
+    """
+    Formatea un texto largo en líneas de longitud máxima max_len.
+    Usa split_char (por ejemplo ;) como separador lógico.
+    NO usa join().
+    """
+
+    if not text:
+        return ""
+
+    resultado = ""
+
+    # Separación lógica (escenas, párrafos, etc.)
+    bloques = text.split(split_char)
+
+    for bloque in bloques:
+        palabras = bloque.strip().split(" ")
+        linea = ""
+
+        for palabra in palabras:
+            if len(linea) + len(palabra) + 1 > max_len:
+                resultado += linea.rstrip() + "\n"
+                linea = palabra + " "
+            else:
+                linea += palabra + " "
+
+        if linea:
+            resultado += linea.rstrip() + "\n"
+
+        # Línea en blanco entre bloques
+        resultado += "\n"
+
+    return resultado.rstrip()
+
+
 def getHeader(text):
-    resultado = "*"*105 + "\n" + text.center(105,"=") + "\n" + "*"*105
+    resultado = "*"*105 + "\n" + text.center(105, "=") + "\n" + "*"*105
 
     return resultado
      
@@ -321,7 +421,7 @@ def checkPassword(password):
     num_corr = False
 
     if len(password) < 8 or len(password) > 12:
-        print("Length of password is not correct")
+        print("Password length has to be minimum 8 or maximum 12")
         return False
     if " " in password:
         print("Password cannot contain spaces")
@@ -441,7 +541,9 @@ def autoreplay_games(user_id):
     if not connection:
         return
 
-    # Obtener partidas del usuario
+    # =========================
+    # 1. OBTENER PARTIDAS
+    # =========================
     query_games = """
         SELECT g.id_game, g.game_date, a.name
         FROM game g
@@ -455,27 +557,22 @@ def autoreplay_games(user_id):
         close_connection(connection)
         return
 
-
-    # Crear matriz: [num, id_game, fecha, nombre]
+    # Matriz: [num, id_game, fecha, nombre]
     matrix = []
     counter = 1
     for g in games:
         matrix.append([counter, g["id_game"], g["game_date"], g["name"]])
         counter += 1
 
-    # Ordenar por fecha
     bubble_sort_by_date(matrix)
 
-    # Mostrar partidas
     print("\n=== PARTIDAS DISPONIBLES ===")
     for row in matrix:
         print(str(row[0]) + ") " + str(row[3]) + " (" + str(row[2]) + ")")
 
-    # Elegir partida
     try:
         choice = int(input("\nElige una partida: "))
     except ValueError:
-        print("Entrada no válida.")
         close_connection(connection)
         return
 
@@ -490,36 +587,83 @@ def autoreplay_games(user_id):
         close_connection(connection)
         return
 
-    # Autoreplay
+    # =========================
+    # 2. REPLAY DE DECISIONES
+    # =========================
     query_replay = """
-        SELECT s.description AS step_text,
-               d.description AS decision_text,
-               d.result_text
+        SELECT 
+            s.id_steps,
+            s.description AS step_text,
+            d.description AS decision_text,
+            d.result_text,
+            d.fk_decisions_next_step
         FROM choices c
         JOIN steps s ON c.fk_choices_steps = s.id_steps
         JOIN decisions d ON c.fk_choices_decisions = d.id_decisions
         WHERE c.fk_choices_game = %s
         ORDER BY c.id_choices ASC;
     """
+
     replay_data = execute_query(connection, query_replay, (selected_game_id,))
 
     print("\n=== AUTOREPLAY DE LA PARTIDA ===\n")
+
+    last_next_step = None
+
     if replay_data:
         for r in replay_data:
-            print("ESCENA:")
-            print(formatText(r["step_text"], 100, ";")) # Usamos tu función de formato
-            print("\nDECISIÓN TOMADA: " + str(r["decision_text"]))
+
+            # Guardamos el siguiente paso (para mostrar el final después)
+            last_next_step = r["fk_decisions_next_step"]
+
+            # Formateamos los textos
+            step_text = formatText(r["step_text"], 105, ";")
+            decision_text = formatText(r["decision_text"], 105, ";")
+
             if r["result_text"]:
-                print("RESULTADO: " + str(r["result_text"]))
-            input("Enter to continue")
-            print("\n" + "-"*50 + "\n")
-    
+                result_text = formatText(r["result_text"], 105, ";")
+            else:
+                result_text = None
+
+            # Mostramos la escena completa
+            printReplayBox(
+                step_text,
+                decision_text,
+                result_text
+            )
+
+            input("\nEnter to continue")
+            print("\n")
+
+    # =========================
+    # 3. MOSTRAR STEP FINAL
+    # =========================
+    if last_next_step:
+        query_final = """
+            SELECT description
+            FROM steps
+            WHERE id_steps = %s;
+        """
+        final_step = execute_query(connection, query_final, (last_next_step,))
+
+        if final_step:
+            final_text = formatText(final_step[0]["description"], 110, ";")
+
+            printReplayBox(
+                final_text,
+                "FIN",
+                None
+            )
+
+            input("\nEnter to finish")
+
     close_connection(connection)
 
-# =========================
-# EJECUCIÓN
-# =========================
 
-if __name__ == "__main__":
-    # Usuario logueado (ejemplo: admin = 1)
-    autoreplay_games(user_id=1)
+def clear_screen():
+    """
+    Limpia la pantalla de la terminal.
+    Funciona en Windows, Linux y macOS.
+    """
+    # Windows usa 'cls', Linux/macOS usan 'clear'
+    os.system('cls' if os.name == 'nt' else 'clear')
