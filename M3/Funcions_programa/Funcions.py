@@ -174,7 +174,7 @@ def checkUserbdd(user,password):
 
 def getReport1():
     """Informe 1: Respuesta más usada"""
-    query = "SELECT a.name AS 'aventura', s.id_steps, LEFT(s.description, 50) AS 'paso', " + \
+    query = "SELECT a.name AS 'aventura', s.id_steps, s.description AS 'paso', " + \
             "d.description AS 'respuesta', COUNT(c.id_choices) AS 'votos' " + \
             "FROM choices c JOIN decisions d ON c.fk_choices_decisions = d.id_decisions " + \
             "JOIN steps s ON c.fk_choices_steps = s.id_steps " + \
@@ -187,29 +187,32 @@ def getReport1():
 
 def showReport1():
     datos_reporte = getReport1() 
+    
+    # Vamos a usar el ancho máximo (105) para dar espacio a los textos
+    # Anchos: Aventura(12) + Paso(45) + Respuesta(38) + Votos(10) = 105
+    anchos = (12, 45, 38, 10)
+    
     cabecera = getHeadeForTableFromTuples(
         ("Aventura", "Paso", "Respuesta", "Votos"), 
-        (15, 40, 30, 10), 
+        anchos, 
         "MOST USED ANSWERS"
     )
     print(cabecera)
     
     for fila in datos_reporte:
-        # RECORTAMOS los textos para que no superen el ancho de la columna
-        # Usamos el rebanado de strings [0:35] para dejar espacio
-        txt_paso = str(fila["paso"])
-        if len(txt_paso) > 37:
-            txt_paso = txt_paso[0:34] + "..."
-            
-        txt_resp = str(fila["respuesta"])
-        if len(txt_resp) > 27:
-            txt_resp = txt_resp[0:24] + "..."
+        # 1. Limpiamos solo los saltos de línea reales para no romper la lógica
+        p = str(fila["paso"]).replace("\n", " ").strip()
+        r = str(fila["respuesta"]).replace("\n", " ").strip()
+        v = str(fila["votos"]).strip()
 
-        # Ahora enviamos los textos ya recortados
-        celdas = (str(fila["aventura"]), txt_paso, txt_resp, str(fila["votos"]))
-        anchos = (15, 40, 30, 10)
+        # 2. Pasamos los textos COMPLETOS (sin recortar)
+        celdas = (str(fila["aventura"]), p, r, v)
         
+        # 3. Ponemos MARGIN en 0. 
+        # Si pones margen, tu función resta ese espacio al ancho y provoca saltos extra.
         print(getFormatedBodyColumns(celdas, anchos, 2))
+        
+
 
 
 def getReport2():
@@ -250,35 +253,40 @@ def showReport2():
 
 
 def getReport3(username):
-    """Informe 3: Aventuras jugadas por el usuario X"""
-    query = "SELECT a.id_adventures, a.name, MAX(g.game_date) AS 'fecha' " + \
-            "FROM game g JOIN users u ON g.fk_game_users = u.id_users " + \
+    """Informe 3: TODAS las partidas jugadas por el usuario (Historial completo)"""
+    query = "SELECT a.id_adventures, a.name, g.game_date AS 'fecha' " + \
+            "FROM game g " + \
+            "JOIN users u ON g.fk_game_users = u.id_users " + \
             "JOIN adventures a ON g.fk_game_adventures = a.id_adventures " + \
-            "WHERE u.username = %s GROUP BY a.id_adventures, a.name ORDER BY fecha DESC;"
+            "WHERE u.username = %s " + \
+            "ORDER BY g.game_date DESC;" # Ordenado de la más nueva a la más vieja
+            
     connection = connect_to_database()
     res = execute_query(connection, query, (username,))
     connection.close()
     return res
  
-def showReport3(username_string):
-    """Muestra las aventuras jugadas por el usuario X"""
-    # getReport3 espera un string (el nombre de usuario)
-    listado_aventuras = getReport3(username_string) 
+def showReport3(nombre_usuario):
+    # nombre_usuario ya debe venir como STRING desde joc.py
+    listado_aventuras = getReport3(nombre_usuario) 
     
     print(getHeader("MY ADVENTURE LOG"))
     
     if not listado_aventuras:
-        # Aquí puedes usar el string del nombre sin problemas
-        print(("Todavia no has empezado ninguna historia: " + username_string).center(105))
+        print("Todavia no has empezado ninguna historia.".center(105))
     else:
         for registro in listado_aventuras:
-            m = registro["fecha"]
-            f_texto = str(m.day) + "/" + str(m.month) + "/" + str(m.year) + " " + \
-                      str(m.hour) + ":" + str(m.minute)
+            # Convertimos el objeto datetime a string: "YYYY-MM-DD HH:MM:SS"
+            f_raw = str(registro["fecha"])
+            
+            # Recortamos por posición de caracteres (Slicing)
+            # f_raw[8:10] es el día, f_raw[5:7] es el mes, etc.
+            f_texto = f_raw[8:10] + "/" + f_raw[5:7] + "/" + f_raw[0:4] + " " + f_raw[11:16]
             
             id_str = str(registro["id_adventures"])
             nom_str = str(registro["name"])
             
+            # Montaje de la línea
             linea_final = id_str.ljust(10) + nom_str.ljust(30) + f_texto.ljust(30)
             print(linea_final.center(105))
 

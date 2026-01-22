@@ -15,7 +15,7 @@ db_config = {
     'host': 'localhost',
     'user': 'root',
     'password': 'admin',
-    'database': 'split_fiction',
+    'database': 'equipo7_splitfiction',
 }
 
 def connect_to_database():

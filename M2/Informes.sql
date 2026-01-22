@@ -5,7 +5,7 @@ use split_fiction;
 SELECT 
     a.name AS "ID AVENTURA - NOMBRE",
     s.id_steps AS "ID Paso",
-    LEFT(s.description, 50) AS "PASO DESCRIPCION",
+    s.description AS "PASO DESCRIPCION",
     d.description AS "RESPUESTAS",
     COUNT(c.id_choices) AS "NUMERO VECES SELECCIONADA"
 FROM choices c
