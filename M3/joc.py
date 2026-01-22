@@ -118,8 +118,8 @@ while not salir:
 
         # -------- PLAY HISTORY --------
         if opc == 1:
-            print("\nAquí iría el modo juego")
-            input("Enter to continue")
+            play_game(user_login["id_users"])
+
 
         # -------- REPLAY MODE --------
         elif opc == 2:
