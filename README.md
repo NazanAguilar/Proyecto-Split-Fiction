@@ -1,28 +1,42 @@
-# Proyecto-Split-Fiction
+# Projecte-Split-Fiction
 AWS1 (Choose Your Story) NazanAguilar-MarcLosada-StyvenCatagua
 
 
-# Informacion de contacto
+# Informació de contacte
 
 -->Marc Losada:
 
--Correo: mlosadasoler2.eb@iesesteveterradas.cat
+-Correu: mlosadasoler2.eb@iesesteveterradas.cat
+
 
 
 
 -->Nazan Aguilar:
 
--Correo: naguilarperez.cf@iesesteveterradas.cat
+-Correu: naguilarperez.cf@iesesteveterradas.cat
 
 
 
 -->Styven Catagua:
 
--Correo: scataguafortiz.25cf@iesesteveterradas.cat
+-Correu: scataguafortiz.25cf@iesesteveterradas.cat
 
 
 
-# Instalacion
+Motor d'aventures de text on les decisions de l'usuari alteren el curs de la història.
 
+## Estructura del Projecte
 
-# Instrucciones
+*   **/M2**: Conté els scripts SQL de la base de dades.
+    *   `Split Fiction Create_DB (Nazan Marc Styven).sql`: Creació de taules.
+    *   `Split Fiction Alter_DB (Nazan Marc Styven).sql`: Restriccions (PK, FK, Unique).
+    *   `Split Fiction Insert_DB (Nazan Marc Styven).sql`: Dades inicials (Aventures, Personatges, Matrix).
+
+*   **/M3**: Conté els arxius del programa.
+    *   **/Funcions_programa**: Conté totes les funcions del programa.
+        *   **/__pycache__**: serveix per emmagatzemar Bytecode els archius .pyc que són versions "precompiladas" del   teu codi font (.py) transformades a un llenguatge intermedi anomenat bytecode. Accelerar l'Inici i Gestio Automtic.
+        *   `__init__.py`: Serveix per a identificar els arxius i inicialitzar-los
+    *   `joc.py`: Aquí està el programa del joc.
+    *   `proves.txt`: Aqui estaran totes les proves que hem anat fent al llarg del projecte omitint el tipic:
+            print(no se que) 
+            input()
