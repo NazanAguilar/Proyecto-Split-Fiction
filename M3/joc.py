@@ -2,13 +2,18 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 from Funcions_programa.Funcions import *
 
-
-# print(autoreplay_games(1))
+# =====================================
+# PROGRAMA PRINCIPAL
+# =====================================
 
 while not salir:
 
+    # =========================
+    # PORTADA
+    # =========================
     while portada_flg:
 
+        clear_screen()
         for linea in portada:
             print(linea)
 
@@ -16,50 +21,83 @@ while not salir:
 
         if not opc.isdigit():
             print("No numeric option")
-            input("enter to continue")
+            input("Enter to continue")
+            continue
+
+        opc = int(opc)
+
+        # -------- NEW USER --------
+        if opc == 1:
             clear_screen()
+            print(getHeader("NEW USER"))
+            print("Enter 0 at any time to cancel\n")
 
-        elif not (int(opc) in range(1,4)):
-            print("Option out of range")
-            input("enter to continue")
+            # USERNAME
+            while True:
+                user = input("Username: ")
+                if user == "0":
+                    break
+                if checkUser(user) and not userExists(user):
+                    break
+
+            if user == "0":
+                continue
+
+            # PASSWORD
+            while True:
+                password = input("Password: ")
+                if password == "0":
+                    break
+                if checkPassword(password):
+                    break
+
+            if password == "0":
+                continue
+
+            insertUser(len(getUserIds()[1]), user, password)
+            print("\nUser created successfully!")
+            input("Press Enter to continue")
+
+        # -------- CONNECT / LOGIN --------
+        elif opc == 2:
             clear_screen()
+            print(getHeader("LOGIN"))
+            print("Enter 0 at any time to cancel\n")
 
-        else:
-            opc = int(opc)
+            user = input("Username: ")
+            if user == "0":
+                continue
 
-            if opc == 1:
-                create_user = True
+            password = input("Password: ")
+            if password == "0":
+                continue
 
-                while create_user:
-                    print(getHeader("NEW USER"))
-                    comp_user = False
+            user_data = login_user(user, password)
 
-                    while not comp_user:
-                        user = input("Username:\n")
-                        if checkUser(user):
-                            if not userExists(user):
-                                comp_user = True
-
-                    comp_pass = False
-                    while not comp_pass:
-                        password = input("Password:\n")
-                        if checkPassword(password):
-                            insertUser(len(getUserIds()[1]), user, password)
-                            comp_pass = True
-                            menu0 = True
-                            create_user = False
-
-            elif opc == 2:
-                input("Aqui te conectas")
-                # Luego asles de portada_flg
+            if user_data:
+                print("\nLogin successful!")
+                user_login = user_data
                 conectado_flg = True
                 portada_flg = False
-
+                input("Press Enter to continue")
             else:
-                salir = True
+                print("\nInvalid username or password")
+                input("Press Enter to continue")
 
+        # -------- EXIT --------
+        elif opc == 3:
+            salir = True
+
+        else:
+            print("Option out of range")
+            input("Enter to continue")
+
+    # =========================
+    # PANTALLA PRINCIPAL
+    # =========================
     while conectado_flg:
 
+        clear_screen()
         for linea in pantalla_principal:
             print(linea)
 
@@ -67,32 +105,38 @@ while not salir:
 
         if not opc.isdigit():
             print("No numeric option")
-            input("enter to continue")
-            clear_screen()
+            input("Enter to continue")
+            continue
 
-        elif not (int(opc) in range(1, 5)):
-            print("Option out of range")
-            input("enter to continue")
-            clear_screen()
+        opc = int(opc)
+
+        # -------- PLAY HISTORY --------
+        if opc == 1:
+            print("\nAquí iría el modo juego")
+            input("Enter to continue")
+
+        # -------- REPLAY MODE --------
+        elif opc == 2:
+            print("Reply Mode WIP (WOrk in progress)")
+            input("Enter to continue")
+
+        # -------- REPORTS --------
+        elif opc == 3:
+            print("\nAquí irán los reportes")
+            input("Enter to continue")
+
+        # -------- LOG OUT --------
+        elif opc == 4:
+            conectado_flg = False
+            portada_flg = True
+            user_login = None
 
         else:
-            opc = int(opc)
-
-            if opc == 1:
-                input("Aqui Juegas")
-
-            elif opc == 2:
-                input("Aqui tienes el reply mode")
-
-            elif opc == 3:
-                input("Aqui tienes los reportes / informes")
-
-            else:
-                conectado_flg = False
-                portada_flg = True
+            print("Option out of range")
+            input("Enter to continue")
 
 
-
+"""
 
 
     while not login and user_login == None:
@@ -150,3 +194,4 @@ while not salir:
                 comp_pass = True
                 menu0 = True
                 create_user = False
+"""
