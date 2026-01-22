@@ -1,14 +1,15 @@
 import pymysql
 from distutils import util
 
-"""db_config = {
+db_config = {
     'host': '127.0.0.1', #ieticloudpro.ieti.cat
     'user': 'equipo7',
     'password': 'P@ssw0rd',
     'database': 'equipo7_SplitFiction',
     'puerto': 3307
-}"""
+}
 
+"""
 
 # Configuración de conexión
 db_config = {
@@ -17,6 +18,9 @@ db_config = {
     'password': 'Pacman36575681',
     'database': 'equipo7_SplitFiction',
 }
+
+
+"""
 
 def connect_to_database():
     """Establece una conexión con la base de datos MySQL."""
@@ -27,7 +31,7 @@ def connect_to_database():
             user=db_config['user'],
             password=db_config['password'],
             database=db_config['database'],
-            # port=db_config['puerto'],
+            port=db_config['puerto'],
         )
 
         #print("Conectado a la base de datos")

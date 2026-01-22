@@ -132,13 +132,13 @@ while not salir:
                 opc = int(getOpt(textInforme,inputOptText,rangeList=lista_menu0,exceptions=excepciones))
                 if opc == 1:
                     showReport1()
-                    input()
+                    input("Enter to continue")
                 elif opc == 2:
                     showReport2()
-                    input()
+                    input("Enter to continue")
                 elif opc == 3:
                     showReport3(user_login["username"])
-                    input()
+                    input("Enter to continue")
                 else:
                     informes = False
 
