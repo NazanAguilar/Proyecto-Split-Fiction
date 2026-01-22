@@ -64,7 +64,28 @@ Per a executar el projecte desde localhost correctament, necessitaràs:
     ```
 ## 🚀 Instal·lació i Ús (Local host)
 
-### 1. Preparar la Base de Dades (M2)
+Pero abans tindras que descomentar en el arxiu de BBDD.py a on posa `# Configuración de conexión (Localhost)`
+Aixo:
+"""db_config = {
+    'host': 'localhost',
+    'user': 'Nazan',
+    'password': 'Pacman36575681',
+    'database': 'split_fiction',
+}"""
+I comenteu:
+db_config = {
+    'host': '127.0.0.1', #ieticloudpro.ieti.cat
+    'user': 'equipo7',
+    'password': 'P@ssw0rd',
+    'database': 'equipo7_SplitFiction',
+    'puerto': 3307
+}
+
+YI si ho voleu al reves llavors ho feu al reves
+
+## 🚀 Instal·lació i Ús (Localhost)
+
+### 1. Preparar la Base de Dades (M2) 
 Executa els scripts de la carpeta `/M2` en l'ordre següent en el teu gestor de base de dades (Workbench, phpMyAdmin, etc.):
 1. `Split Fiction Create_DB (Nazan Marc Styven).sql`
 2. `Split Fiction Alter_DB (Nazan Marc Styven).sql`
@@ -89,6 +110,7 @@ Atès que la base de dades es troba al servidor **Proxmox** de l'institut, la co
 
 ### 2. Executar el Joc (M3)
 Un cop configurada la BBDD, accedeix a la carpeta `/M3` i executa el fitxer principal:
+
 ```bash
 python joc.py
 ```
