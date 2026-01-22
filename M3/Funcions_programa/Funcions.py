@@ -780,6 +780,175 @@ def autoreplay_games(user_id):
     close_connection(connection)
 
 
+
+def play_game(user_id):
+    connection = connect_to_database()
+    if not connection:
+        return
+
+    # =========================
+    # 1. ELEGIR AVENTURA
+    # =========================
+    adventures = execute_query(connection, "SELECT * FROM adventures;")
+
+    print("\nAVENTURAS DISPONIBLES:\n")
+    for adv in adventures:
+        print(str(adv["id_adventures"]) + ") " + adv["name"])
+
+    adventure_id = None
+    while adventure_id is None:
+        opc = input("\nElige una aventura por ID: ")
+        if opc.isdigit():
+            opc = int(opc)
+            for adv in adventures:
+                if adv["id_adventures"] == opc:
+                    adventure_id = opc
+                    break
+        if adventure_id is None:
+            print("Aventura no válida")
+
+    # =========================
+    # 2. ELEGIR PERSONAJE
+    # =========================
+    # CAMBIO: mostrar todos los personajes disponibles, no solo los asignados a la aventura
+    characters = execute_query(connection, "SELECT * FROM characters;")
+
+    print("\nPERSONAJES DISPONIBLES:\n")
+    for ch in characters:
+        print(str(ch["id_characters"]) + ") " + ch["name"])
+
+    character_id = None
+    while character_id is None:
+        opc = input("\nElige un personaje por ID: ")
+        if opc.isdigit():
+            opc = int(opc)
+            for ch in characters:
+                if ch["id_characters"] == opc:
+                    character_id = opc
+                    break
+        if character_id is None:
+            print("Personaje no válido")
+
+    # =========================
+    # 3. CREAR PARTIDA
+    # =========================
+    execute_query(
+        connection,
+        """
+        INSERT INTO game
+        (fk_game_users, fk_game_characters, fk_game_adventures, game_date, date_reg, user_reg)
+        VALUES (%s, %s, %s, NOW(), NOW(), %s);
+        """,
+        (user_id, character_id, adventure_id, user_id)
+    )
+    connection.commit()
+
+    game_id = execute_query(
+        connection,
+        "SELECT LAST_INSERT_ID() AS id;"
+    )[0]["id"]
+
+    # =========================
+    # 4. PASO INICIAL (ID MÁS PEQUEÑO)
+    # =========================
+    step = execute_query(
+        connection,
+        """
+        SELECT id_steps, description
+        FROM steps
+        WHERE fk_steps_adventures = %s
+        ORDER BY id_steps ASC
+        LIMIT 1;
+        """,
+        (adventure_id,)
+    )
+
+    if not step:
+        print("La aventura no tiene pasos")
+        close_connection(connection)
+        return
+
+    current_step = step[0]["id_steps"]
+
+    # =========================
+    # 5. BUCLE PRINCIPAL
+    # =========================
+    while True:
+        step_data = execute_query(
+            connection,
+            "SELECT description, is_final FROM steps WHERE id_steps = %s;",
+            (current_step,)
+        )[0]
+
+        printReplayBox(
+            formatText(step_data["description"], 88, ";"),
+            "—",
+            None
+        )
+
+        if step_data["is_final"]:
+            print("\nFIN DE LA AVENTURA\n")
+            break
+
+        decisions = execute_query(
+            connection,
+            "SELECT * FROM decisions WHERE fk_decisions_steps = %s;",
+            (current_step,)
+        )
+
+        print("\nDECISIONES DISPONIBLES:\n")
+        valid_ids = []
+
+        for d in decisions:
+            print(str(d["id_decisions"]) + ") " + d["description"])
+            valid_ids.append(d["id_decisions"])
+
+        chosen_decision = None
+        while chosen_decision is None:
+            opc = input("\nElige una decisión por ID: ")
+
+            if not opc.isdigit():
+                print("Opción inválida")
+                continue
+
+            opc = int(opc)
+            if opc not in valid_ids:
+                print("Esa decisión no existe")
+                continue
+
+            chosen_decision = opc
+
+        decision_data = None
+        for d in decisions:
+            if d["id_decisions"] == chosen_decision:
+                decision_data = d
+                break
+
+        execute_query(
+            connection,
+            """
+            INSERT INTO choices
+            (fk_choices_game, fk_choices_steps, fk_choices_decisions, date_reg, user_reg)
+            VALUES (%s, %s, %s, NOW(), %s);
+            """,
+            (game_id, current_step, chosen_decision, user_id)
+        )
+        connection.commit()
+
+        if decision_data["result_text"]:
+            printReplayBox(
+                "",
+                "",
+                formatText(decision_data["result_text"], 88, ";")
+            )
+            input("\nEnter para continuar")
+
+        current_step = decision_data["fk_decisions_next_step"]
+
+    close_connection(connection)
+
+
+
 def clear_screen():
     """
     Limpia la pantalla de la terminal.

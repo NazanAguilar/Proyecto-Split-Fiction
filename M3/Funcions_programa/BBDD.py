@@ -13,9 +13,9 @@ from distutils import util
 # Configuración de conexión
 db_config = {
     'host': 'localhost',
-    'user': 'root',
-    'password': 'admin',
-    'database': 'equipo7_splitfiction',
+    'user': 'Nazan',
+    'password': 'Pacman36575681',
+    'database': 'equipo7_SplitFiction',
 }
 
 def connect_to_database():
@@ -27,6 +27,7 @@ def connect_to_database():
             user=db_config['user'],
             password=db_config['password'],
             database=db_config['database'],
+            # port=db_config['puerto'],
         )
 
         #print("Conectado a la base de datos")
