@@ -123,8 +123,7 @@ while not salir:
 
         # -------- REPLAY MODE --------
         elif opc == 2:
-            print("Reply Mode WIP (WOrk in progress)")
-            input("Enter to continue")
+            autoreplay_games(user_login["id_users"])
 
         # -------- REPORTS --------
         elif opc == 3:
