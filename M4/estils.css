@@ -234,7 +234,11 @@ input:invalid, textarea:invalid {
 }
 
 .svg-section {
+  padding: 0;
+  margin: 0;
+  width: 100%;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
   gap: 30px;
@@ -253,6 +257,13 @@ input:invalid, textarea:invalid {
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
   animation: draw 2s ease forwards;
+}
+
+.svg-section img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .path-left {
