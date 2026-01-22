@@ -17,7 +17,7 @@ Motor d'aventures de text on les decisions de l'usuari alteren el curs de la his
 Conté els scripts SQL per a la gestió del sistema:
 *   `Split Fiction Create_DB (Nazan Marc Styven).sql`: Creació de taules.
 *   `Split Fiction Alter_DB (Nazan Marc Styven).sql`: Restriccions (PK, FK, Unique).
-*   `Split Fiction Insert_DB (Nazan Marc Styven).sql`: Dades inicials (Aventures, Personatges, Matrix).
+*   `Split Fiction Insert_DB (Nazan Marc Styven).sql`: Dades inicials (Aventures, Personatges, Historias).
 *   `Informes.sql`: Scripts dels informes i consultes de seguiment.
 
 ### **/M3: Programa (Python)**
@@ -64,7 +64,7 @@ db_config = {
     'host': 'localhost',
     'user': 'root',
     'password': 'admin',
-    'database': 'split_fiction',
+    'database': 'equipo7_SplitFiction',
 }
 ```
 I comentar:
