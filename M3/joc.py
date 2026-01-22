@@ -54,9 +54,15 @@ while not salir:
             if password == "0":
                 continue
 
-            insertUser(len(getUserIds()[1]), user, password)
-            print("\nUser created successfully!")
+            created = insertUser(len(getUserIds()[1]), user, password)
+
+            if created:
+                print("\nUser created successfully!")
+            else:
+                print("\nUsername already exists. User not created.")
+
             input("Press Enter to continue")
+
 
         # -------- CONNECT / LOGIN --------
         elif opc == 2:

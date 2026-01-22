@@ -116,32 +116,45 @@ def getUserIds():
         return {}
     return {}
 
-def insertUser(id,name,pwd):
+def insertUser(id, name, pwd):
     pwd = cifrar(pwd)
     connection = connect_to_database()
-    
-    if connection:
+
+    if not connection:
+        return False
+
+    try:
+        # Comprobar si el username ya existe
+        query_user = "SELECT 1 FROM users WHERE username = %s;"
+        exists_user = execute_query(connection, query_user, (name,))
+
+        if exists_user:
+            return False   # Usuario duplicado
+
         id_actual = id
-        insert = False
-        while not insert:
-            # 1. Comprobamos si el ID ya existe
+        while True:
+            # Comprobar si el ID existe
             query_check = "SELECT 1 FROM users WHERE id_users = %s;"
-            exists = execute_query(connection, query_check, (id_actual,))
+            exists_id = execute_query(connection, query_check, (id_actual,))
 
-            if not exists:
-                query = "INSERT INTO users (id_users, username, password, date_reg, user_reg)" \
-                " VALUES (%s, %s, %s, NOW(), %s);"
+            if not exists_id:
+                query = """
+                    INSERT INTO users (id_users, username, password, date_reg, user_reg)
+                    VALUES (%s, %s, %s, NOW(), %s);
+                """
                 execute_query(connection, query, (id_actual, name, pwd, id_actual))
-                connection.commit() 
-                insert = True
-                print("User {} Created".format(name)) 
-                input()
+                connection.commit()
+                return True   # Usuario creado correctamente
 
-            else:
-                id_actual = id_actual + 1
+            id_actual += 1
+
+    except Exception as e:
+        print("Error creating user:", e)
+        return False
+
+    finally:
         close_connection(connection)
-        return
-    return None
+
 
 def checkUserbdd(user,password):
     users_dict = getUsers()
@@ -186,7 +199,7 @@ def formatText(text,lenLine,split):
         return resultado
 
 def getHeader(text):
-    resultado = "*"*105 + "\n" + text.center(105,"=") + "\n" + "*"*105
+    resultado = "*"*105 + "\n" + text.center(105, "=") + "\n" + "*"*105
 
     return resultado
      
@@ -321,8 +334,8 @@ def checkPassword(password):
     min_corr = False
     num_corr = False
 
-    if len(password) < 8 or len(password) > 12:
-        print("Length of password is not correct")
+    if len(password) < 8:
+        print("Password length has to be minimum 8 ")
         return False
     if " " in password:
         print("Password cannot contain spaces")
