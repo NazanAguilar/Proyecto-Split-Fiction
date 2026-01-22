@@ -127,8 +127,21 @@ while not salir:
 
         # -------- REPORTS --------
         elif opc == 3:
-            print("\nAquí irán los reportes")
-            input("Enter to continue")
+            informes = True
+            while informes:
+                opc = int(getOpt(textInforme,inputOptText,rangeList=lista_menu0,exceptions=excepciones))
+                if opc == 1:
+                    showReport1()
+                    input()
+                elif opc == 2:
+                    showReport2()
+                    input()
+                elif opc == 3:
+                    showReport3(user_login["username"])
+                    input()
+                else:
+                    informes = False
+
 
 
 

@@ -193,7 +193,7 @@ def showReport1():
     anchos = (12, 45, 38, 10)
     
     cabecera = getHeadeForTableFromTuples(
-        ("Aventura", "Paso", "Respuesta", "Votos"), 
+        ("Adventure", "Step", "Answer", "Votes"), 
         anchos, 
         "MOST USED ANSWERS"
     )
@@ -229,7 +229,7 @@ def showReport2():
     datos_lista = getReport2() 
     
     cabecera = getHeadeForTableFromTuples(
-        ("Nom de l'Usuari", "Total Partides", "Data de Registre"), 
+        ("Name User", "Total Games", "Date Record"), 
         (40, 30, 35), 
         "RANKING DE JUGADORS"
     )
