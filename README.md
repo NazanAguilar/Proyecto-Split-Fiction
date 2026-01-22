@@ -1,87 +1,85 @@
 # Projecte-Split-Fiction
-AWS1 (Choose Your Story) NazanAguilar-MarcLosada-StyvenCatagua
-
-
-# Informació de contacte
-
--->Marc Losada:
-
--Correu: mlosadasoler2.eb@iesesteveterradas.cat
-
-
-
--->Nazan Aguilar:
-
--Correu: naguilarperez.cf@iesesteveterradas.cat
-
-
-
--->Styven Catagua:
-
--Correu: scataguafortiz.25cf@iesesteveterradas.cat
-
-
+**AWS1 (Choose Your Story)** - Nazan Aguilar, Marc Losada i Styven Catagua
 
 Motor d'aventures de text on les decisions de l'usuari alteren el curs de la història.
 
-## Estructura del Projecte
+## 📧 Informació de Contacte
 
-*   **/M2**: Conté els scripts SQL de la base de dades.
-    *   `Split Fiction Create_DB (Nazan Marc Styven).sql`: Creació de taules.
-    *   `Split Fiction Alter_DB (Nazan Marc Styven).sql`: Restriccions (PK, FK, Unique).
-    *   `Split Fiction Insert_DB (Nazan Marc Styven).sql`: Dades inicials (Aventures, Personatges, Matrix).
-    *   `Informes.sql`: Aquí estan els scripts dels informes
+*   **Marc Losada:** [mlosadasoler2.eb@iesesteveterradas.cat](mailto:mlosadasoler2.eb@iesesteveterradas.cat)
+*   **Nazan Aguilar:** [naguilarperez.cf@iesesteveterradas.cat](mailto:naguilarperez.cf@iesesteveterradas.cat)
+*   **Styven Catagua:** [scataguafortiz.25cf@iesesteveterradas.cat](mailto:scataguafortiz.25cf@iesesteveterradas.cat)
 
-*   **/M3**: Conté els arxius del programa.
-    *   **/Funcions_programa**: Conté totes les funcions del programa.
-        *   **/__pycache__**: Serveix per emmagatzemar Bytecode els arxius .pyc que són versions "precompilades" del   teu codi font (.py) transformades a un llenguatge intermedi anomenat bytecode. Accelerar l'Inici quan s'executa el codi mira si l'arxiu si no ha canviat llavors càrrega el bytecode directament, cosa que estalvia temps de càrrega i Python gestiona automàticament amb una marca de temps i regenera l'arxiu __pycache__.
-        *   `__init__.py`: Permet que es pugui fer `import carpeta.arxiu` i l'arxiu `__init__.py` s'executa automàticament.
-        *   `BBDD.py`: Aquí estan les funcions que siguin sobre la base de dades com per exemple: execute_query, connect_database, etc.
-        *   `Funcions.py`: Aquí estarien totes les funcions de la base de dades.
-        *   `Variables.py`: Aquí estarien totes les variables que s'utilitzen per a tot.
-    *   `joc.py`: Aquí està el programa del joc.
-    *   `proves.txt`: Aqui estaran totes les proves que hem anat fent al llarg del projecte omitint el tipic:
-            print(no se que) 
-            input()
-    
-    **/M4**: Conté la pàgina web pujada al proxmox.
-    *   `index.html`: Pàgina principal del proyecte.
-    *   **`estils.css`**: Estil amb capzalera i peu de pàgina, funcional en totes les pàgines web 
-    *   `instruccions.html`: Instruccions de com es juga el videojoc.
-    *   `historia.html`: Història de que consiteix el videojoc + serie d'imatges en format carrousel on es mostra les imatges de la nostra versió del Split Fiction .
-    *   `sobre_nosaltres.html`: Nom del equip desenvolupador + un video de YouTube.
-    *   `contacte.html`: Formulari (No funcional) + les nostres dades de contacte.
-    *   **/img**: Imatges introduides a la pàgina web.
+---
+
+## 📂 Estructura del Projecte
+
+### **/M2: Base de Dades**
+Conté els scripts SQL per a la gestió del sistema:
+*   `Split Fiction Create_DB (Nazan Marc Styven).sql`: Creació de taules.
+*   `Split Fiction Alter_DB (Nazan Marc Styven).sql`: Restriccions (PK, FK, Unique).
+*   `Split Fiction Insert_DB (Nazan Marc Styven).sql`: Dades inicials (Aventures, Personatges, Matrix).
+*   `Informes.sql`: Scripts dels informes i consultes de seguiment.
+
+### **/M3: Programa (Python)**
+*   **/Funcions_programa**:
+    *   `BBDD.py`: Funcions de connexió i execució de consultes SQL.
+    *   `Funcions.py`: Totes les funcions lògiques i de base de dades.
+    *   `Variables.py`: Totes les variables globals utilitzades.
+    *   `__pycache__`: Emmagatzema el bytecode (.pyc) per accelerar l'inici del programa evitant la recompilació si el codi no ha canviat.
+    *   `__init__.py`: Permet la importació modular de la carpeta.
+*   `joc.py`: Arxiu principal que conté el programa del joc.
+*   `proves.txt`: Registre de les proves realitzades durant el desenvolupament.
+
+### **/M4: Projecte Web**
+Pàgina informativa allotjada al servidor **Proxmox**:
+*   `index.html`: Pàgina principal del projecte.
+*   `estils.css`: Disseny visual funcional per a totes les pàgines.
+*   `instruccions.html`: Guia de com jugar al videojoc.
+*   `historia.html`: Descripció de l'argument i carrousel d'imatges.
+*   `sobre_nosaltres.html`: Informació de l'equip i vídeo de presentació.
+*   `contacte.html`: Formulari de contacte i dades de l'equip.
+*   **/img**: Recursos gràfics de la web.
+
+---
 
 ## 🛠️ Requisits del Sistema
 
-Per a executar el projecte desde localhost correctament, necessitaràs:
-*   **Python 3.10+** instalado. [Python Downloads](https://www.python.org)
-*   **MySQL Server** (versió 8.0 recomanada).
-*   Llibreria **PyMySQL**:
+*   **Python 3.10+** [Pàgina oficial](https://www.python.org)
+*   **MySQL Server 8.0**
+*   Biblioteca **PyMySQL**:
     ```bash
     pip install PyMySQL
     ```
-## 🚀 Instal·lació i Ús (Local host)
 
-Pero abans tindras que descomentar en el arxiu de BBDD.py a on posa `# Configuración de conexión (Localhost)`
-Aixo:
-"""db_config = {
+---
+
+## ⚙️ Configuració de la Connexió
+
+Per a connectar-se a la base de dades, cal editar el fitxer `BBDD.py` segons l'entorn de treball:
+
+**Opció A: Localhost**
+Cal descomentar el bloc de configuració local:
+```python
+db_config = {
     'host': 'localhost',
     'user': 'root',
     'password': 'admin',
     'database': 'split_fiction',
-}"""
-I comenteu:
+}
+```
+I comentar:
+```python
 db_config = {
-    'host': '127.0.0.1', #ieticloudpro.ieti.cat
+    'host': '127.0.0.1',
     'user': 'equipo7',
     'password': 'P@ssw0rd',
     'database': 'equipo7_SplitFiction',
-    'puerto': 3307
+    'port': 3307
 }
+```
 
-I si ho voleu al reves llavors ho feu al reves
+**Opció B: Tunel SSH**
+Fer lo mateix que en la opcio A pero al reves.
 
 ## 🚀 Instal·lació i Ús (Localhost)
 
@@ -114,3 +112,5 @@ Un cop configurada la BBDD, accedeix a la carpeta `/M3` i executa el fitxer prin
 ```bash
 python joc.py
 ```
+
+Projecte desenvolupat per l'Equip 7 - IETI Esteve Terradas.
