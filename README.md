@@ -68,8 +68,8 @@ Pero abans tindras que descomentar en el arxiu de BBDD.py a on posa `# Configura
 Aixo:
 """db_config = {
     'host': 'localhost',
-    'user': 'Nazan',
-    'password': 'Pacman36575681',
+    'user': 'root',
+    'password': 'admin',
     'database': 'split_fiction',
 }"""
 I comenteu:
@@ -81,7 +81,7 @@ db_config = {
     'puerto': 3307
 }
 
-YI si ho voleu al reves llavors ho feu al reves
+I si ho voleu al reves llavors ho feu al reves
 
 ## 🚀 Instal·lació i Ús (Localhost)
 
