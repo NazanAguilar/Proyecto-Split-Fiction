@@ -2,6 +2,17 @@ from Funcions_programa.BBDD import *
 from Funcions_programa.Variables import *
 from Funcions_programa.Funcions import *
 
+"""print(getReport1())
+print(showReport1())
+input()"""
+"""print(getReport2())
+print(showReport2())
+input()"""
+user_login = login_user("admin", "admin")
+getReport3(user_login)
+showReport3(user_login)
+input()
+
 # =====================================
 # PROGRAMA PRINCIPAL
 # =====================================

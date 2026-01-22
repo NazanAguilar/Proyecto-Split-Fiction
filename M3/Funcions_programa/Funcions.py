@@ -171,7 +171,119 @@ def checkUserbdd(user,password):
             return 1
         else:
             return -1 
+
+def getReport1():
+    """Informe 1: Respuesta más usada"""
+    query = "SELECT a.name AS 'aventura', s.id_steps, LEFT(s.description, 50) AS 'paso', " + \
+            "d.description AS 'respuesta', COUNT(c.id_choices) AS 'votos' " + \
+            "FROM choices c JOIN decisions d ON c.fk_choices_decisions = d.id_decisions " + \
+            "JOIN steps s ON c.fk_choices_steps = s.id_steps " + \
+            "JOIN adventures a ON s.fk_steps_adventures = a.id_adventures " + \
+            "GROUP BY a.name, s.id_steps, d.description ORDER BY a.name ASC, votos DESC;"
+    connection = connect_to_database()
+    res = execute_query(connection, query)
+    connection.close()
+    return res
+
+def showReport1():
+    datos_reporte = getReport1() 
+    cabecera = getHeadeForTableFromTuples(
+        ("Aventura", "Paso", "Respuesta", "Votos"), 
+        (15, 40, 30, 10), 
+        "MOST USED ANSWERS"
+    )
+    print(cabecera)
     
+    for fila in datos_reporte:
+        # RECORTAMOS los textos para que no superen el ancho de la columna
+        # Usamos el rebanado de strings [0:35] para dejar espacio
+        txt_paso = str(fila["paso"])
+        if len(txt_paso) > 37:
+            txt_paso = txt_paso[0:34] + "..."
+            
+        txt_resp = str(fila["respuesta"])
+        if len(txt_resp) > 27:
+            txt_resp = txt_resp[0:24] + "..."
+
+        # Ahora enviamos los textos ya recortados
+        celdas = (str(fila["aventura"]), txt_paso, txt_resp, str(fila["votos"]))
+        anchos = (15, 40, 30, 10)
+        
+        print(getFormatedBodyColumns(celdas, anchos, 2))
+
+
+def getReport2():
+    """Informe 2: Tots els jugadors ordenats per partides jugades"""
+    query = "SELECT u.username, COUNT(g.id_game) AS 'total', u.date_reg " + \
+            "FROM users u JOIN game g ON u.id_users = g.fk_game_users " + \
+            "GROUP BY u.id_users ORDER BY total DESC, u.date_reg ASC;"
+    connection = connect_to_database()
+    res = execute_query(connection, query)
+    connection.close()
+    return res
+
+def showReport2():
+    datos_lista = getReport2() 
+    
+    cabecera = getHeadeForTableFromTuples(
+        ("Nom de l'Usuari", "Total Partides", "Data de Registre"), 
+        (40, 30, 35), 
+        "RANKING DE JUGADORS"
+    )
+    print(cabecera)
+    
+    if not datos_lista:
+        print("Encara no hi ha dades de joc.".center(105))
+    else:
+        for jugador_dict in datos_lista:
+            # Formateig manual de data per slicing
+            f_raw = str(jugador_dict["date_reg"])
+            fecha_texto = f_raw[8:10] + "/" + f_raw[5:7] + "/" + f_raw[0:4]
+            
+            # Preparem les dades per a les columnes
+            celdas = (str(jugador_dict["username"]), str(jugador_dict["total"]), fecha_texto)
+            anchos = (40, 30, 35)
+            
+            # Fem servir la teva funció per mantenir el teu estil visual
+            print(getFormatedBodyColumns(celdas, anchos, 2))
+
+
+
+def getReport3(username):
+    """Informe 3: Aventuras jugadas por el usuario X"""
+    query = "SELECT a.id_adventures, a.name, MAX(g.game_date) AS 'fecha' " + \
+            "FROM game g JOIN users u ON g.fk_game_users = u.id_users " + \
+            "JOIN adventures a ON g.fk_game_adventures = a.id_adventures " + \
+            "WHERE u.username = %s GROUP BY a.id_adventures, a.name ORDER BY fecha DESC;"
+    connection = connect_to_database()
+    res = execute_query(connection, query, (username,))
+    connection.close()
+    return res
+ 
+def showReport3(username_string):
+    """Muestra las aventuras jugadas por el usuario X"""
+    # getReport3 espera un string (el nombre de usuario)
+    listado_aventuras = getReport3(username_string) 
+    
+    print(getHeader("MY ADVENTURE LOG"))
+    
+    if not listado_aventuras:
+        # Aquí puedes usar el string del nombre sin problemas
+        print(("Todavia no has empezado ninguna historia: " + username_string).center(105))
+    else:
+        for registro in listado_aventuras:
+            m = registro["fecha"]
+            f_texto = str(m.day) + "/" + str(m.month) + "/" + str(m.year) + " " + \
+                      str(m.hour) + ":" + str(m.minute)
+            
+            id_str = str(registro["id_adventures"])
+            nom_str = str(registro["name"])
+            
+            linea_final = id_str.ljust(10) + nom_str.ljust(30) + f_texto.ljust(30)
+            print(linea_final.center(105))
+
+
+
 
 #FUNCIONES PROGRAMA
 

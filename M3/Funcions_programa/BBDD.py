@@ -13,8 +13,8 @@ from distutils import util
 # Configuración de conexión
 db_config = {
     'host': 'localhost',
-    'user': 'Nazan',
-    'password': 'Pacman36575681',
+    'user': 'root',
+    'password': 'admin',
     'database': 'split_fiction',
 }
 

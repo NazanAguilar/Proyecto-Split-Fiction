@@ -26,8 +26,7 @@ JOIN game g ON u.id_users = g.fk_game_users
 GROUP BY u.id_users
 ORDER BY 
     "GAMES PLAYED" DESC, -- Primero el que más ha jugado
-    u.date_reg ASC           -- Si hay empate, el que se registró antes (más antiguo)
-LIMIT 1;
+    u.date_reg ASC;           -- Si hay empate, el que se registró antes (más antiguo)
 
 -- Informe 3: Quantes aventures ha jugat l'usuari X
 
@@ -40,4 +39,4 @@ JOIN users u ON g.fk_game_users = u.id_users
 JOIN adventures a ON g.fk_game_adventures = a.id_adventures
 WHERE u.username = "admin"
 GROUP BY a.id_adventures, a.name
-ORDER BY Ultima_Vez_Jugada DESC;
+ORDER BY "date" DESC;
