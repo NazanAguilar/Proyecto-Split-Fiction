@@ -48,9 +48,9 @@ Pàgina informativa allotjada al servidor **Proxmox**:
 *   **MySQL Server 8.0**
 *   Biblioteca **PyMySQL**:
     ```bash
-    pip install PyMySQL
+    pip install PyMySQL [Pàgina oficial](https://code.visualstudio.com/)
     ```
-
+*   **Visual StudioCode**
 ---
 
 ## ⚙️ Configuració de la Connexió
