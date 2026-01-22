@@ -674,6 +674,7 @@ def autoreplay_games(user_id):
 
     if not games:
         print("No tienes partidas guardadas.")
+        input("Enter to continue")
         close_connection(connection)
         return
 
@@ -887,7 +888,8 @@ def play_game(user_id):
         )
 
         if step_data["is_final"]:
-            print("\nFIN DE LA AVENTURA\n")
+            print("\nFIN\n")
+            input("Enter to continue")
             break
 
         decisions = execute_query(
