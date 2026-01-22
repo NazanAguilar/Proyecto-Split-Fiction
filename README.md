@@ -30,7 +30,7 @@ Motor d'aventures de text on les decisions de l'usuari alteren el curs de la his
     *   `Split Fiction Create_DB (Nazan Marc Styven).sql`: Creació de taules.
     *   `Split Fiction Alter_DB (Nazan Marc Styven).sql`: Restriccions (PK, FK, Unique).
     *   `Split Fiction Insert_DB (Nazan Marc Styven).sql`: Dades inicials (Aventures, Personatges, Matrix).
-    *   `Informes.sql`: Aqui estan els scripts dels informes
+    *   `Informes.sql`: Aquí estan els scripts dels informes
 
 *   **/M3**: Conté els arxius del programa.
     *   **/Funcions_programa**: Conté totes les funcions del programa.
@@ -52,3 +52,43 @@ Motor d'aventures de text on les decisions de l'usuari alteren el curs de la his
     *   `sobre_nosaltres.html`: Nom del equip desenvolupador + un video de YouTube.
     *   `contacte.html`: Formulari (No funcional) + les nostres dades de contacte.
     *   **/img**: Imatges introduides a la pàgina web.
+
+## 🛠️ Requisits del Sistema
+
+Per a executar el projecte desde localhost correctament, necessitaràs:
+*   **Python 3.10+** instalado. [Python Downloads](https://www.python.org)
+*   **MySQL Server** (versió 8.0 recomanada).
+*   Llibreria **PyMySQL**:
+    ```bash
+    pip install PyMySQL
+    ```
+## 🚀 Instal·lació i Ús (Local host)
+
+### 1. Preparar la Base de Dades (M2)
+Executa els scripts de la carpeta `/M2` en l'ordre següent en el teu gestor de base de dades (Workbench, phpMyAdmin, etc.):
+1. `Split Fiction Create_DB (Nazan Marc Styven).sql`
+2. `Split Fiction Alter_DB (Nazan Marc Styven).sql`
+3. `Split Fiction Insert_DB (Nazan Marc Styven).sql`
+
+### 2. Executar el Joc (M3)
+Un cop configurada la BBDD, accedeix a la carpeta `/M3` i executa el fitxer principal:
+```bash
+python joc.py
+```
+
+## 🚀 Instal·lació i Ús (Tunel SSH)
+
+## 🔒 Seguretat i Connexió Remota (SSH Tunneling)
+
+Atès que la base de dades es troba al servidor **Proxmox** de l'institut, la connexió es realitza mitjançant un **túnel SSH** per garantir la seguretat de les dades.
+
+### Com connectar-se:
+1. **Establir el Túnel**: Abans d'executar el joc, cal obrir el túnel des de la terminal o mitjançant un client (com PuTTY o la terminal nativa):
+   ```bash
+   ssh -p 20127 -L 3307:127.0.0.1:3306 aventura7@ieticloudpro.ieti.cat
+
+### 2. Executar el Joc (M3)
+Un cop configurada la BBDD, accedeix a la carpeta `/M3` i executa el fitxer principal:
+```bash
+python joc.py
+```
