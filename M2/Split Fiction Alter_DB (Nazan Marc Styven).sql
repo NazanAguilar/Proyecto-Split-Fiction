@@ -1,4 +1,4 @@
-USE Split_Fiction;
+USE equipo7_SplitFiction;
 
 -- =========================
 -- USERS

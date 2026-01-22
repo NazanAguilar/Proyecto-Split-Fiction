@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS Split_Fiction;
-USE Split_Fiction;
+CREATE DATABASE IF NOT EXISTS equipo7_SplitFiction;
+USE equipo7_SplitFiction;
 
 -- =========================
 -- USERS
