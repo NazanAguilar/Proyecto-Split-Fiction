@@ -1,0 +1,70 @@
+#variables para pruebas
+
+text1 = "Seguro que más de uno recuerda aquellos libros en los que podías elegir cómo seguir con la aventura que estabas viviendo simplemente"
+
+adventures = {
+    1: {
+        "Name": "nom de l'aventura",
+        "Description": "descripció de l'aventura asrgarsar argrgagrarg argargaergaergaer adrgsergearherhahehe",
+        "characters": [1, 2, 3]  # llista amb els IDs dels personatges
+    },
+    2: {
+        "Name": "nom de l'aventura 2",
+        "Description": "descripció de la segona aventura",
+        "characters": [4, 5]
+    }
+}
+
+
+
+#-----------------PRUEBAS----------------------
+
+#print(formatText(text1,20,split=" "))
+
+#print(getHeader("Adventures"))
+
+#print(getFormatedBodyColumns((text1,text1,text1),(20,30,50),margin=2))
+
+#print(getFormatedAdventures(adventures))
+
+#print(getHeadeForTableFromTuples(("column1","column2","column3"),(10,20,30)))
+
+#print(getTableFromDict(tuple_of_keys, weigth_of_columns, diccionari))
+
+"""opc = getOpt(textOpts,inputOptText,rangeList=lista,exceptions=excepciones)
+print(opc)
+print(type(opc))
+opc = getOpt(textOpts,inputOptText,dictionary=dic_range,exceptions=excepciones)
+print(opc)
+print(type(opc))"""
+
+"""print(getFormatedTable((('ID AVENTURA - NOMBRE', 'ID PASO - DESCRIPCION', 'ID RESPUESTA - DESCRIPCION', 'NUMERO VECES SELECCIONADA'), 
+                        ('10 - Todos los h├®roes necesitan su princesa', '101 - Son las 6 de la ma├▒ana, %personaje% est├í profundamente dormido. Le suena la alarma!', '101 - Apaga la alarma porque quiere dormir, han sido d├¡as muy duros y %personaje% necesita un descanso.', 7)
+                        , ('10 - Todos los h├®roes necesitan su princesa', '103 - Nuestro h├®roe %personaje% se viste r├ípidamente y va an direcci├│n al ciber, hay mucho jaleo en la calle, tambi├®n mucha polic├¡a.', '108 - Entra en el ciber a revisar si la princesa Wyoming sigue dentro.', 5))
+                       ,title="Most used answer"))"""
+
+# --- EJEMPLOS DE PRUEBA PARA LA CONTRASEÑA---
+
+"""print("--- Test 1: Longitud corta ---")
+print(checkPassword("Ab1!")) 
+
+print("\n--- Test 2: Longitud larga ---")
+print(checkPassword("PasswordMuyLarga123!") )
+
+print("\n--- Test 3: Contiene espacios ---")
+print(checkPassword("Ab 123456!") )
+
+print("\n--- Test 4: Sin caracteres especiales ---")
+print(checkPassword("Password123") )
+
+print("\n--- Test 5: Sin números (dígitos) ---")
+print(checkPassword("Password!!") )
+
+print("\n--- Test 6: Sin mayúsculas o sin minúsculas ---")
+print(checkPassword("password123!") )
+print(checkPassword("PASSWORD123!") )
+
+print("\n--- Test 7: TODO CORRECTO (No imprimirá nada) ---")
+print(checkPassword("Admin123!"))"""
+
+#print(userExists("Jordi"))
